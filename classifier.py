@@ -1,6 +1,9 @@
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+from sklearn.externals import joblib
+
+
 
 class Classifier:
     def __init__(self, csv_path):
@@ -14,6 +17,12 @@ class Classifier:
 
     def get_score(self):
         return self.score
+
+    def save_clf(self, name):
+
+        joblib.dump(self.clf, "model/" + name + ".m")
+
+        return None
 
 
     # def predict(self, csv):

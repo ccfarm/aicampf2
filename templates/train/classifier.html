@@ -38,22 +38,37 @@
             </div>
         </fieldset>
 
-
         <fieldset class="layui-elem-field">
-            <legend>数据预览</legend>
+            <legend>训练成绩</legend>
             <div class="layui-field-box">
-                <table class="layui-table">
+                <table class="layui-table" lay-skin="line">
                     <tbody>
                         <tr>
-                            <th>版权所有</th>
-                            <td>xxxxx(xxxx)
-                                <a href="http://www.xxx.com/" class='x-a' target="_blank">访问官网</a></td>
+                            <td >
+                                <a id="score" class="x-a" href="/" target="_blank">模型还没有训练</a>
+                            </td>
                         </tr>
-                        <tr>
-                            <th>开发者</th>
-                            <td>马志斌(113664000@qq.com)</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>训练成绩</legend>
+            <div class="layui-field-box">
+                <table class="layui-table" lay-skin="line">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="text" id="model_name" value="输入模型名称">
+                            </td>
+                            <td >
+                                <input type="button" value="保存模型" onclick="save()">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
         </fieldset>
 
@@ -78,12 +93,24 @@
                 data:{
                     message:"hello"
                 },
-                processData:false,  //tell jQuery not to process the data
-                contentType: false,  //tell jQuery not to set contentType
                 success:function(data) {
-                    alert("Data: " + data + "\nStatus: " + status);
+                    $("#score").html("模型得分" + data['score']);
                 }
 
+            })
+        }
+
+
+        function save() {
+            $.ajax({
+                url:'/classifier-save',
+                type:'POST',
+                data:{
+                    'name':document.getElementById("model_name").value
+                },
+                success:function(data) {
+                    alert("模型已保存")
+                }
             })
         }
         </script>

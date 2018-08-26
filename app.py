@@ -9,7 +9,8 @@ from classifier import Classifier
 import csv
 
 app = Flask(__name__)
-csv_path = ''
+csv_path = 'csv/wine.csv'
+classifier = None
 
 @app.route('/')
 def hello_world():
@@ -45,11 +46,19 @@ def classifier_train():
         # f.save("/csv/" + f.name)
         # reader = csv.reader(f)
         global csv_path
+        global classifier
         classifier = Classifier(csv_path)
         score = classifier.get_score()
         re = {"score":score}
         return jsonify(re)
 
+@app.route('/classifier-save', methods=['GET', 'POST'])
+def classifier_save():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        global classifier
+        classifier.save_clf(name)
+        return jsonify(None)
 
 
 if __name__ == '__main__':
