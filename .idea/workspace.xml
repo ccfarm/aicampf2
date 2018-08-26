@@ -2,20 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1b8b2658-344b-4cfc-aca5-39f5bc6464c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classifier.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconfont.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconfont.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconfont.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconfont.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/common/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/common/left-nav.html.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/index/welcome.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/train/classifier.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/train/picture-classifier.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wine.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/classifier.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,8 +28,9 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="1" />
+          <entry key="csv" value="1" />
           <entry key="html" value="9" />
-          <entry key="py" value="1" />
+          <entry key="py" value="3" />
           <entry key="xhtml" value="1" />
         </counts>
       </usages-collector>
@@ -46,55 +38,62 @@
         <counts>
           <entry key="CSS" value="1" />
           <entry key="HTML" value="9" />
-          <entry key="Python" value="1" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Python" value="3" />
           <entry key="XHTML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="html" value="221" />
-          <entry key="py" value="176" />
+          <entry key="py" value="409" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="221" />
-          <entry key="Python" value="176" />
+          <entry key="Python" value="409" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
+            <state relative-caret-position="166">
+              <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
-                <marker date="1535260190000" expanded="true" signature="208:517" ph="..." />
+                <marker date="1535260900000" expanded="true" signature="734:740" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/train/classifier.html">
+        <entry file="file://$PROJECT_DIR$/service.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-14">
-              <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+            <state relative-caret-position="75">
+              <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+                <marker date="1535261493000" expanded="true" signature="90:91" ph="..." />
+                <marker date="1535261493000" expanded="true" signature="144:149" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/common/left-nav.html.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="24" column="40" lean-forward="true" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/wine.csv">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -121,10 +120,11 @@
         <option value="$PROJECT_DIR$/templates/index/index.html" />
         <option value="$PROJECT_DIR$/templates/common/header.html" />
         <option value="$PROJECT_DIR$/templates/train/picture-classifier.html" />
-        <option value="$PROJECT_DIR$/classifier.py" />
         <option value="$PROJECT_DIR$/templates/train/classifier.html" />
         <option value="$PROJECT_DIR$/templates/common/left-nav.html.html" />
         <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/service.py" />
+        <option value="$PROJECT_DIR$/classifier.py" />
       </list>
     </option>
   </component>
@@ -154,34 +154,6 @@
               <item name="aicampf2" type="b2602c69:ProjectViewProjectNode" />
               <item name="aicampf2" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="aicampf2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="aicampf2" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="aicampf2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="aicampf2" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="aicampf2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="aicampf2" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="aicampf2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="aicampf2" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="index" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="aicampf2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="aicampf2" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="train" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -199,6 +171,7 @@
       <recent name="$PROJECT_DIR$/templates/index" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/templates/train" />
       <recent name="$PROJECT_DIR$/static" />
       <recent name="$PROJECT_DIR$/templates/common" />
@@ -248,7 +221,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="714" extended-state="6" />
+    <frame x="0" y="24" width="1280" height="714" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
@@ -315,10 +288,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classifier.py">
+    <entry file="file://$PROJECT_DIR$/templates/common/left-nav.html.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="8" lean-forward="true" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+        <state relative-caret-position="214">
+          <caret line="24" column="40" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -329,20 +302,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/common/left-nav.html.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="24" column="40" lean-forward="true" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/wine.csv">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
+        <state relative-caret-position="166">
+          <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <marker date="1535260190000" expanded="true" signature="208:517" ph="..." />
+            <marker date="1535260900000" expanded="true" signature="734:740" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <marker date="1535261493000" expanded="true" signature="90:91" ph="..." />
+            <marker date="1535261493000" expanded="true" signature="144:149" ph="..." />
           </folding>
         </state>
       </provider>

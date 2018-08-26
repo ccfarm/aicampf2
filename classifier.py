@@ -1,4 +1,9 @@
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
 
-list = []
-list.__s
+class classifier:
+    def init(self, csv):
+        data = pd.read_csv()
+        X = 
+        self.clf = LogisticRegression()
+        self.clf.fit()

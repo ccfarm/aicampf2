@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import render_template
+from flask import request
+import csv
 
 app = Flask(__name__)
 
@@ -20,6 +22,14 @@ def picture_classifier():
 @app.route('/train/classifier.html')
 def classifier():
     return render_template('train/classifier.html')
+
+@app.route('/train/classifier/upload', methods=['GET', 'POST'])
+def classifier_upload():
+    if request.method == 'POST':
+        f = request.files['the_file']
+        reader = csv.reader(f)
+
+
 
 
 
