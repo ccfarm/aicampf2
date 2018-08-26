@@ -2,31 +2,45 @@
     <body>
     <div class="x-body layui-anim layui-anim-up">
         <fieldset class="layui-elem-field">
-            <legend>模型训练</legend>
+            <legend>上传数据</legend>
             <div class="layui-field-box">
                 <table class="layui-table">
                     <tbody>
                         <tr>
                             <th>上传数据</th>
                             <td>
-                                <input type="file" name="fileUpload" />
-                                <input type="submit" value="上传文件" />
+                                <form  action="/classfier-upload" id="upload_file" enctype='multipart/form-data' method="post">
+10                                  <input type="file" name="file">
+11                                  <input type="submit" value="上传">
+12                              </form>
                             </td></tr>
+                        <tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>模型训练</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <tbody>
                         <tr>
                             <th>参数1</th>
                             <td>
                                 <input type="text" name="aug1" value ="默认值">
                             </td></tr>
-
                     </tbody>
                 </table>
                 <div>
-                    <input type="button" name="train" value="训练">
+                    <input type="button" id="train" name="train" value="训练" onclick="train()">
                 </div>
             </div>
         </fieldset>
+
+
         <fieldset class="layui-elem-field">
-            <legend>开发团队</legend>
+            <legend>数据预览</legend>
             <div class="layui-field-box">
                 <table class="layui-table">
                     <tbody>
@@ -45,13 +59,36 @@
 
     </div>
         <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
+        function upload() {
+            var form_data = new FormData($('#upload_file')[0]);
+            $.ajax({
+                url:'/classfier-upload',
+                type:'POST',
+                data:form_data,
+                success:function(data) {
+                }
+            })
+
+        }
+
+        function train() {
+            $.ajax({
+                url:'/classifier-train',
+                type:'POST',
+                data:{
+                    message:"hello"
+                },
+                processData:false,  //tell jQuery not to process the data
+                contentType: false,  //tell jQuery not to set contentType
+                success:function(data) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                }
+
+            })
+        }
         </script>
+
+
+
     </body>
 </html>
