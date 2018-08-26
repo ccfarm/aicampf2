@@ -30,8 +30,6 @@ def classifier_upload():
         reader = csv.reader(f)
 
 
-
-
-
 if __name__ == '__main__':
+    app.debug=True
     app.run()

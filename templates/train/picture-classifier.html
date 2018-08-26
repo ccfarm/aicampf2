@@ -1,57 +1,126 @@
 {% include 'common/header.html' %}
-    <body>
-    <div class="x-body layui-anim layui-anim-up">
-        <fieldset class="layui-elem-field">
-            <legend>模型训练</legend>
-            <div class="layui-field-box">
-                <table class="layui-table">
-                    <tbody>
-                        <tr>
-                            <th>上传图片</th>
-                            <td>
-                                <input type="file" name="fileUpload" />
-                                <input type="submit" value="上传文件" />
-                            </td></tr>
-                        <tr>
-                            <th>参数1</th>
-                            <td>
-                                <input type="text" name="aug1" value ="默认值">
-                            </td></tr>
+<body>
+<div class="x-body layui-anim layui-anim-up">
+    <fieldset class="layui-elem-field">
+        <legend>模型训练</legend>
+        <div class="layui-field-box">
+            <table class="layui-table">
+                <tbody>
+                <tr>
 
-                    </tbody>
-                </table>
-                <div>
-                    <input type="button" name="train" value="训练">
-                </div>
-            </div>
-        </fieldset>
-        <fieldset class="layui-elem-field">
-            <legend>开发团队</legend>
-            <div class="layui-field-box">
-                <table class="layui-table">
-                    <tbody>
-                        <tr>
-                            <th>版权所有</th>
-                            <td>xxxxx(xxxx)
-                                <a href="http://www.xxx.com/" class='x-a' target="_blank">访问官网</a></td>
-                        </tr>
-                        <tr>
-                            <th>开发者</th>
-                            <td>马志斌(113664000@qq.com)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </fieldset>
+                    <th>上传图片Tfrecord数据</th>
+                    <form action="" method=post enctype=multipart/form-data>
+                        <input title="点击选择" multiple type="file" name="fileUpload"/>
+                        <input type="submit" value="上传文件"/></form>
+                    </td>
+                </tr>
+                <tr>
+                    <th>learnig_rate</th>
+                    <td>
+                        <input type="text" name="learning_rate" value="0.001">
+                    </td>
 
-    </div>
-        <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-        </script>
-    </body>
+                </tr>
+                <tr>
+                    <th>num_epoch2_per_decay</th>
+                    <td>
+                        <input type="text" name="num_epoch2_per_decay" value="2">
+                    </td>
+
+                </tr>
+                <tr>
+                    <th>optimizer</th>
+                    <td>
+                        <input type="text" name="optimizer" value="rmsprop">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>batch_size</th>
+                    <td>
+                        <input type="text" name="batch_size" value="32">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>dataset_name</th>
+                    <td>
+                        <input type="text" name="dataset_name" value="cifar10">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>checkpoint_path</th>
+                    <td>
+                        <input type="text" name="checkpoint_path" value="">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>train_dir</th>
+                    <td>
+                        <input type="text" name="train_dir" value="">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>model_name</th>
+                    <td>
+                        <input type="text" name="model_name" value="pnasnet_large">
+                    </td>
+                </tr>
+                <tr>
+                    <th>checkpoint_exclude_scopes</th>
+                    <td>
+                        <input type="text" name="checkpoint_exclude_scopes" value="final_layer,aux7">
+                    </td>
+                </tr>
+                <tr>
+                    <th>trainable_scopes</th>
+                    <td>
+                        <input type="text" name="trainable_scopes" value="final_layer,aux7">
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div>
+                <input type="button" name="train" style="width:80px;height:40px;" value="训练">
+            </div>
+            <p><br></p>
+            <div>
+                <textarea name="log" style="width:800px;height:400px;" readonly="readonly">log information:</textarea>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="layui-elem-field">
+        <legend>开发团队</legend>
+        <div class="layui-field-box">
+            <table class="layui-table">
+                <tbody>
+                <tr>
+                    <th>版权所有</th>
+                    <td>AI Camp
+                        <a href="http://www.bytedance.com/" class='x-a' target="_blank">字节跳动</a></td>
+                </tr>
+                <tr>
+                    <th>开发者</th>
+                    <td>F1组</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+</div>
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+</body>
 </html>
