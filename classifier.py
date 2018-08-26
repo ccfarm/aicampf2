@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.externals import joblib
+import mysql.connector
+import const
 
 
 
@@ -19,9 +21,14 @@ class Classifier:
         return self.score
 
     def save_clf(self, name):
-
-        joblib.dump(self.clf, "model/" + name + ".m")
-
+        model_path = "model/" + name + ".m"
+        joblib.dump(self.clf, model_path)
+        conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database)
+        cursor = conn.cursor()
+        cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address) '
+                       'values (%s, %s)', [name, 'LR', 'classification', model_path])
+        conn.commit()
+        cursor.close()
         return None
 
 
