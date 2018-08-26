@@ -23,10 +23,11 @@ class Classifier:
     def save_clf(self, name):
         model_path = "model/" + name + ".m"
         joblib.dump(self.clf, model_path)
-        conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database)
+        conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
+                                       ,auth_plugin='mysql_native_password')
         cursor = conn.cursor()
         cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address) '
-                       'values (%s, %s)', [name, 'LR', 'classification', model_path])
+                       'values (%s, %s, %s, %s)', [name, 'LR', 'classification', model_path])
         conn.commit()
         cursor.close()
         return None
