@@ -1,0 +1,57 @@
+{% include 'common/header.html' %}
+    <body>
+    <div class="x-body layui-anim layui-anim-up">
+        <fieldset class="layui-elem-field">
+            <legend>模型训练</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <tbody>
+                        <tr>
+                            <th>上传数据</th>
+                            <td>
+                                <input type="file" name="fileUpload" />
+                                <input type="submit" value="上传文件" />
+                            </td></tr>
+                        <tr>
+                            <th>参数1</th>
+                            <td>
+                                <input type="text" name="aug1" value ="默认值">
+                            </td></tr>
+
+                    </tbody>
+                </table>
+                <div>
+                    <input type="button" name="train" value="训练">
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>开发团队</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <tbody>
+                        <tr>
+                            <th>版权所有</th>
+                            <td>xxxxx(xxxx)
+                                <a href="http://www.xxx.com/" class='x-a' target="_blank">访问官网</a></td>
+                        </tr>
+                        <tr>
+                            <th>开发者</th>
+                            <td>马志斌(113664000@qq.com)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+    </div>
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    </body>
+</html>
