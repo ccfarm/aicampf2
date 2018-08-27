@@ -52,13 +52,23 @@
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
-            <legend>训练成绩</legend>
+            <legend>模型测试</legend>
+
             <div class="layui-field-box">
+
+                <div>
+                    <form  action="/classfier-test" id="classfier-test" enctype='multipart/form-data' method="post">
+                        <input type="file" name="file">
+                        <input type="button" value="测试" onclick="classifierTest()">
+                    </form>
+                </div>
+
                 <table class="layui-table" lay-skin="line">
                     <tbody>
                         <tr>
-                            <td >
-                                <a id="score" class="x-a" href="/" target="_blank">模型还没有训练</a>
+                            <td>准确率</td>
+                            <td>
+                                <a id="p"></a>
                             </td>
                         </tr>
                     </tbody>
@@ -67,7 +77,7 @@
         </fieldset>
 
         <fieldset class="layui-elem-field">
-            <legend>训练成绩</legend>
+            <legend>保存模型</legend>
             <div class="layui-field-box">
                 <table class="layui-table" lay-skin="line">
                     <tbody>
@@ -112,10 +122,27 @@
                     'param':document.getElementById("param").value
                 },
                 success:function(data) {
-                    $("#score").html("模型得分" + data['score']);
+                    alert("训练成功")
                 }
 
             })
+        }
+
+        function classifierTest() {
+            var form_data = new FormData($('#classfier-test')[0]);
+            $.ajax({
+                url:'/classfier-test',
+                type:'POST',
+                data:form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: false,
+                success:function(data) {
+                    $("#p").html(data['p']);
+                }
+            })
+
         }
 
 
