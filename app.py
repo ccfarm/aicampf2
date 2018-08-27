@@ -90,10 +90,14 @@ def classifier_train():
                 tmp[1] = int(tmp[1])
             param_dict[tmp[0]] = tmp[1]
         classifier = Classifier(csv_path, param_dict)
-        return jsonify("ok")
+
+        score = classifier.get_score()
+        re = {"score": score}
+        return jsonify(re)
 
 
-@app.route('/classfier-test', methods=['GET', 'POST'])
+
+@app.route('/classifier-test', methods=['GET', 'POST'])
 def classifier_test():
     if request.method == 'POST':
         f = request.files['file']
@@ -147,6 +151,19 @@ def regression_train():
         score = regression.get_score()
         re = {"score": score}
         return jsonify(re)
+
+
+@app.route('/regression-test', methods=['GET', 'POST'])
+def regression_test():
+    if request.method == 'POST':
+        f = request.files['file']
+        global csv_path
+        csv_path = "csv/" + f.filename
+        f.save(csv_path)
+        global regression
+        re = regression.test_regression(csv_path)
+        print(re)
+    return jsonify(re)
 
 
 @app.route('/regression-save', methods=['GET', 'POST'])
