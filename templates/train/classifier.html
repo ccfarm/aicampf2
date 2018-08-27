@@ -11,7 +11,7 @@
                             <td>
                                  <form  action="/classfier-upload" id="upload_file" enctype='multipart/form-data' method="post">
                                      <input type="file" name="file">
-                                     <input type="submit" value="上传">
+                                     <input type="button" value="上传" onclick="upload()">
                                  </form>
                             </td></tr>
                         <tr>
@@ -80,7 +80,12 @@
                 url:'/classfier-upload',
                 type:'POST',
                 data:form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: false,
                 success:function(data) {
+                    alert("上传成功")
                 }
             })
 
