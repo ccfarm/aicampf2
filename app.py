@@ -31,7 +31,8 @@ regression = None
 regression_clf = None
 
 size = 0
-log = ''
+offset = 0
+
 
 ALLOWED_EXTENSIONS = {'jpg', 'JPG', 'jpeg', 'JPEG', 'png'}
 
@@ -234,12 +235,15 @@ def get_pic_train_params():
     params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
     params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
     params['batchSize']),shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-    global log
-    log += p.stdout
+    global size, offset
     if request.method == 'GET':
         signal = request.args.get('signal')
         if signal is None:
-            return (p.stdout)
+            p.stdout.seek(0, 2)
+            size += p.stdout.tell()
+            data = p.stdout.read(size-offset)
+            offset = size
+            return data
         elif signal == 'STOP':
             p.kill()
     return redirect(url_for('picture_classifier'))
