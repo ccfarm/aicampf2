@@ -246,10 +246,10 @@ def get_pic_train_params():
         # base_path = path.abspath(path.dirname(__file__))
         with open('./uploads/path.txt', 'rb') as f:
             data_path = f.read().strip()
-        cmd = """python -u ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s \
+        cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s \
         --checkpoint_path=%s --checkpoint_exclude_scopes=%s --trainable_scopes=%s \
         --model_name=%s --train_dir=%s --learning_rate=%s \
-        --optimizer=%s --batch_size=%s >> loginfo.txt"""
+        --optimizer=%s --batch_size=%s """
         p = Popen(cmd % (
         params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
         params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
@@ -293,4 +293,4 @@ def get_pic_eval_params():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',debug=False)
