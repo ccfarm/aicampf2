@@ -238,6 +238,8 @@ def get_pic_train_params():
         params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     # //global size, offset
     if request.method == 'GET' and p is not None:
+        # 感觉这里没进来啊
+        print('enter get method')
         signal = request.args.get('signal')
         print(signal)
         if signal == 'LOG':

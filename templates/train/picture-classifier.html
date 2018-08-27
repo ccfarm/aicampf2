@@ -221,7 +221,10 @@
             picClassfierTimer = window.setInterval(function () {
                 $.ajax({
                     type: 'GET',
-                    url: '/picture-classifier-params?signal=LOG',
+                    url: '/picture-classifier-params',
+                    data: {
+                      signal: 'LOG'
+                    },
                     success: function (data) {
                         // data就是Log信息
                         console.log(data)
@@ -239,7 +242,10 @@
         $.ajax({
             // todo...
             type: 'GET',
-            url: '/picture-classifier-params?signal=STOP',
+            url: '/picture-classifier-params',
+            data: {
+                signal: 'STOP'
+            },
             success: function (data) {
                 alert("模型已经停止训练")
             }
