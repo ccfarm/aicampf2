@@ -165,12 +165,15 @@ def get_pic_train_params():
     # base_path = path.abspath(path.dirname(__file__))
     with open('./uploads/file.txt', 'rb') as f:
         data_path = f.read().strip()
-    cmd = """python train_image_classifier.py --dataset_name=cifar10 --dataset_dir=./slim/tmp/cifar10 
-    --checkpoint_path=./slim/tmp/pnasnet-5_large_2017_12_13/model.ckpt 
-    --checkpoint_exclude_scopes=final_layer,aux_7 --trainable_scopes=final_layer,aux_7,cell10,cell11 
-    --model_name=pnasnet_large --train_dir=./slim/tmp/pnasnet-model --learning_rate=0.001 
-    --optimizer=rmsprop --batch_size=8 --clone_on_cpu=True"""
-    os.system(cmd)
+    cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s 
+    --checkpoint_path=%s 
+    --checkpoint_exclude_scopes=%s --trainable_scopes=%s
+    --model_name=%s --train_dir=%s --learning_rate=%
+    --optimizer=%s --batch_size=%s"""
+    os.system(cmd % (
+    params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
+    params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
+    params['batchSzie']))
     return redirect(url_for('picture_classifier'))
 
 
