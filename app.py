@@ -243,6 +243,7 @@ def get_pic_train_params():
             # p.stdout.seek(0, 2)
             # size += p.stdout.tell()
             data = p.stdout.read()
+            print(data)
             # offset = size
             return data
         elif signal == 'STOP':
