@@ -32,6 +32,7 @@ regression_clf = None
 
 size = 0
 offset = 0
+p = None
 
 
 ALLOWED_EXTENSIONS = {'jpg', 'JPG', 'jpeg', 'JPEG', 'png'}
@@ -216,7 +217,7 @@ def upload_pic_file():
 
 @app.route('/picture-classifier-params', methods=['GET', 'POST'])
 def get_pic_train_params():
-    p = None
+    global p
     if request.method == 'POST':
         params = {'learnRate': request.form.get('learnRateVal'), 'batchSize': request.form.get('batchSize'),
                   'checkPointPath': request.form.get('checkPointPath'), 'trainDir': request.form.get('trainDir'),
@@ -238,7 +239,7 @@ def get_pic_train_params():
         params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     # //global size, offset
     if request.method == 'GET' and p is not None:
-        # 
+        #
         print('enter get method')
         signal = request.args.get('signal')
         print(signal)
