@@ -254,20 +254,20 @@ def get_pic_train_params():
         params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
         params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
         params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-        for line in p.stdout:
-            print(line)
-    # //global size, offset
+        # for line in p.stdout:
+        #     print(line)
+    global size, offset
     if request.method == 'GET' and p is not None:
         print('enter get method')
         signal = request.args.get('signal')
         print(signal)
-        # if signal == 'LOG':
-        # p.stdout.seek(0, 2)
-        # size += p.stdout.tell()
-        # data = p.stdout.read()
-        # print(data)
-        # # offset = size
-        # return data
+        if signal == 'LOG':
+            p.stdout.seek(0, 2)
+            size += p.stdout.tell()
+            data = p.stdout.read()
+            print(data)
+            offset = size
+            return data
         if signal == 'STOP':
             p.kill()
             return 'Model stop train'
