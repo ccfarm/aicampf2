@@ -244,29 +244,29 @@ def get_pic_train_params():
         # base_path = path.abspath(path.dirname(__file__))
         with open('./uploads/path.txt', 'rb') as f:
             data_path = f.read().strip()
-        cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s 
-        --checkpoint_path=%s 
-        --checkpoint_exclude_scopes=%s --trainable_scopes=%s
-        --model_name=%s --train_dir=%s --learning_rate=%s
-        --optimizer=%s --batch_size=%s """
+        cmd = """python -u ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s \
+        --checkpoint_path=%s --checkpoint_exclude_scopes=%s --trainable_scopes=%s \
+        --model_name=%s --train_dir=%s --learning_rate=%s \
+        --optimizer=%s --batch_size=%s >> loginfo.txt"""
         p = Popen(cmd % (
         params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
         params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
         params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        for line in p.stdout:
+            print(line)
     # //global size, offset
     if request.method == 'GET' and p is not None:
-        #
         print('enter get method')
         signal = request.args.get('signal')
         print(signal)
-        if signal == 'LOG':
+        # if signal == 'LOG':
             # p.stdout.seek(0, 2)
             # size += p.stdout.tell()
-            data = p.stdout.read()
-            print(data)
-            # offset = size
-            return data
-        elif signal == 'STOP':
+            # data = p.stdout.read()
+            # print(data)
+            # # offset = size
+            # return data
+        if signal == 'STOP':
             p.kill()
             return 'Model stop train'
     return redirect(url_for('picture_classifier'))
@@ -281,8 +281,8 @@ def get_pic_eval_params():
     # base_path = path.abspath(path.dirname(__file__))
     # with open('./uploads/path.txt', 'rb') as f:
     #     data_path = f.read().strip()
-    cmd = """python eval_image_classifier.py --dataset_name=%s --dataset_dir=./tmp/cifar10 
-    --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13 
+    cmd = """python eval_image_classifier.py --dataset_name=%s --dataset_dir=./tmp/cifar10 \
+    --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13 \
     --eval_dir=./tmp/pnasnet-model --batch_size=%s --max_num_batches=%s"""
     os.system(cmd % (params['dataset_eval'], params['batchSize_eval'], params['maxNumBatches']))
     return redirect(url_for('picture_classifier'))
