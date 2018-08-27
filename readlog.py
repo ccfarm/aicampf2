@@ -1,18 +1,20 @@
 import os
 def readlog(logpath,lastlen):
-    logdata = []
+    logdata = ""
     loglen = 0
 
     if not os.path.isfile(logpath):
-        return loglen,logdata
-    logfile=open(logpath,'r')
+        return loglen, logdata
+    logfile = open(logpath, 'r')
 
     # logfile current size
-    loglen=os.path.getsize(logfile)
+    loglen = os.path.getsize(logfile)
 
     # find the zengliang data of logfile
-    logfile.seek(lastlen,0)
-    logdata=logfile.readlines()
+    logfile.seek(lastlen, 0)
+    logdata = logfile.read()
+
+    logfile.close()
 
     # you need get loglen as the next input of lastlen
-    return loglen,logdata
+    return loglen, logdata
