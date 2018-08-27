@@ -46,7 +46,8 @@
                 <tr>
                     <th>checkpoint_path</th>
                     <td>
-                        <input required type="text" name="checkpoint_path" id="ckpt" value="./tmp/pnasnet-5_large_2017_12_13/model.ckpt">
+                        <input required type="text" name="checkpoint_path" id="ckpt"
+                               value="./tmp/pnasnet-5_large_2017_12_13/model.ckpt">
                     </td>
                 </tr>
 
@@ -81,6 +82,10 @@
             </table>
             <div>
                 <input type="button" name="train" style="width:80px;height:40px;" value="训练" id="trainButton">
+            </div>
+            <p><br></p>
+            <div>
+                <input type="button" name="stop" style="width:80px;height:40px;" value="停止" id="stopButton">
             </div>
             <p><br></p>
             <div>
@@ -168,6 +173,8 @@
 </div>
 <script>
     $(function () {
+
+        //训练模型的代码
         var learnRateVal = $('#learnRate').val()
         var $trainButton = $('#trainButton')
         //var learnRateVal = $learnRate.val()
@@ -177,10 +184,13 @@
         var optimizer = $('#optimizer').val()
         var datasetName = $('#dataset_name').val()
         var modelName = $('#model_name').val()
+
+        var picClassfierTimer = null
+
         $trainButton.on('click', function () {
             var checkPointPath = $('#ckpt').val()
             var trainDir = $('#train_dir').val()
-             if (checkPointPath.length == 0) {
+            if (checkPointPath.length == 0) {
                 alert('please input checkpoint_path')
                 return
             }
@@ -207,21 +217,71 @@
                     // Todo with data...
                 }
             })
+            // ajax轮询获取log信息
+            picClassfierTimer = window.setInterval(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '',
+                    success: function (data) {
+                        // data就是Log信息
+
+                    }
+                })
+            }, 500) // 1000ms
         })
 
-        $('#uploadFileButton').on('click', function () {
-            $.ajax({
-                url: '/picture-classifier-upload',
-                type: 'POST',
-                data: new FormData($('#upload_pic_file')[0]),
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    // todo ..
-                    alert("upload file success")
-                }
-            })
+    })
+
+    $('#stopButton').on('click', function () {
+        // 清除ajax轮询定时器
+        window.clearInterval(picClassfierTimer)
+        // 在发送一个ajax请求，发送一个信号让后台关闭
+        $.ajax({
+            // todo...
+            type: 'GET',
+            url: '',
+            data: {
+                'signal': 'STOP'
+            },
+            success: function (data) {
+                alert("模型已经停止训练")
+            }
+        })
+    })
+
+    // 评估模型的函数
+    var datasetName_eval = $('#dataset_name_eval').val()
+    var batchSize_eval = $('#batch_size_eval').val()
+    var maxNumBatches = $('#max_num_batches').val()
+    $('#evalButton').on('click', function () {
+        $.ajax({
+            type: 'POST',
+            url: '/picture-eval',
+            data: {
+                datasetName_eval: datasetName_eval, // 发送的数据
+                batchSize_eval: batchSize_eval,
+                maxNumBatches: maxNumBatches
+            },
+            success: function (data) {
+                // 请求成功后，再次就收数据，参数data就是后端处理后返回给你的数据
+                alert('开始评估模型')
+            }
+        })
+    })
+
+    //上传文件的代码
+    $('#uploadFileButton').on('click', function () {
+        $.ajax({
+            url: '/picture-classifier-upload',
+            type: 'POST',
+            data: new FormData($('#upload_pic_file')[0]),
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                // todo ..
+                alert("upload file success")
+            }
         })
     })
 

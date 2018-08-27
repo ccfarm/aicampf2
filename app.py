@@ -19,6 +19,7 @@ import csv
 import os
 import uuid
 from os import path
+from subprocess import Popen, PIPE, STDOUT
 
 app = Flask(__name__)
 csv_path = 'csv/wine.csv'
@@ -28,6 +29,9 @@ classifier_clf = None
 
 regression = None
 regression_clf = None
+
+size = 0
+log = ''
 
 ALLOWED_EXTENSIONS = {'jpg', 'JPG', 'jpeg', 'JPEG', 'png'}
 
@@ -226,10 +230,34 @@ def get_pic_train_params():
     --checkpoint_exclude_scopes=%s --trainable_scopes=%s
     --model_name=%s --train_dir=%s --learning_rate=%s
     --optimizer=%s --batch_size=%s """
-    os.system(cmd % (
+    p = Popen(cmd % (
     params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
     params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
-    params['batchSize']))
+    params['batchSize']),shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    global log
+    log += p.stdout
+    if request.method == 'GET':
+        signal = request.args.get('signal')
+        if signal is None:
+            return (p.stdout)
+        elif signal == 'STOP':
+            p.kill()
+    return redirect(url_for('picture_classifier'))
+
+
+@app.route('/picture-eval', methods=['GET', 'POST'])
+def get_pic_eval_params():
+    if request.method == 'POST':
+        params = {'datasetName_eval': request.form.get('datasetName_eval'), 'batchSize_eval': request.form.get('batchSize_eval'),
+                  'maxNumBatches': request.form.get('maxNumBatches')}
+        print(params)
+    # base_path = path.abspath(path.dirname(__file__))
+    # with open('./uploads/path.txt', 'rb') as f:
+    #     data_path = f.read().strip()
+    cmd = """python eval_image_classifier.py --dataset_name=%s --dataset_dir=./tmp/cifar10 
+    --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13 
+    --eval_dir=./tmp/pnasnet-model --batch_size=%s --max_num_batches=%s"""
+    os.system(cmd % (params['dataset_eval'], params['batchSize_eval'], params['maxNumBatches']))
     return redirect(url_for('picture_classifier'))
 
 
