@@ -30,6 +30,7 @@ class Classifier:
                        'values (%s, %s, %s, %s)', [name, 'LR', 'classification', model_path])
         conn.commit()
         cursor.close()
+        conn.close()
         return None
 
 
@@ -38,5 +39,16 @@ class Classifier:
     #     y = self.clf.predict(X)
     #     data = pd.concat(y, X, axis=1)
     #     data.to_csv()
+
+def load_classifier(id):
+    conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
+                                   , auth_plugin='mysql_native_password')
+    cursor = conn.cursor()
+    cursor.execute('select * from model_manage where id = %s', [id])
+    model = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    path = model[4]
+    return joblib.load(path)
 
 
