@@ -262,11 +262,11 @@ def get_pic_train_params():
         signal = request.args.get('signal')
         print(signal)
         if signal == 'LOG':
-            p.stdout.seek(0, 2)
-            size += p.stdout.tell()
+            # p.stdout.seek(0, 2)
+            # size += p.stdout.tell()
             data = p.stdout.read()
             print(data)
-            offset = size
+            # offset = size
             return data
         if signal == 'STOP':
             p.kill()
