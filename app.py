@@ -173,7 +173,7 @@ def get_pic_train_params():
     os.system(cmd % (
     params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
     params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
-    params['batchSzie']))
+    params['batchSize']))
     return redirect(url_for('picture_classifier'))
 
 
