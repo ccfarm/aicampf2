@@ -1,0 +1,126 @@
+{% include 'common/header.html' %}
+    <body>
+    <div class="x-body layui-anim layui-anim-up">
+        <fieldset class="layui-elem-field">
+            <legend>上传数据</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <tbody>
+                        <tr>
+                            <th>上传数据</th>
+                            <td>
+                                 <form  action="/classfier-upload" id="upload_file" enctype='multipart/form-data' method="post">
+                                     <input type="file" name="file">
+                                     <input type="button" value="上传" onclick="upload()">
+                                 </form>
+                            </td></tr>
+                        <tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>模型训练</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <tbody>
+                        <tr>
+                            <th>参数</th>
+                            <td>
+                                <input class="layui-input" type="text" id="param" name="param" value ="n_estimators=10&max_features=auto&max_depth=15">
+                            </td></tr>
+                    </tbody>
+                </table>
+                <div>
+                    <input type="button" id="train" name="train" value="训练" onclick="train()">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>训练成绩</legend>
+            <div class="layui-field-box">
+                <table class="layui-table" lay-skin="line">
+                    <tbody>
+                        <tr>
+                            <td >
+                                <a id="score" class="x-a" href="/" target="_blank">模型还没有训练</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>训练成绩</legend>
+            <div class="layui-field-box">
+                <table class="layui-table" lay-skin="line">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input class="layui-input" type="text" id="model_name" value="输入模型名称">
+                            </td>
+                            <td >
+                                <input type="button" value="保存模型" onclick="save()">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </fieldset>
+
+    </div>
+        <script>
+        function upload() {
+            var form_data = new FormData($('#upload_file')[0]);
+            $.ajax({
+                url:'/regression-upload',
+                type:'POST',
+                data:form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: false,
+                success:function(data) {
+                    alert("上传成功")
+                }
+            })
+
+        }
+
+        function train() {
+            $.ajax({
+                url:'/regression-train',
+                type:'POST',
+                data:{
+                    'param':document.getElementById("param").value
+                },
+                success:function(data) {
+                    $("#score").html("模型得分" + data['score']);
+                }
+
+            })
+        }
+
+
+        function save() {
+            $.ajax({
+                url:'/regression-save',
+                type:'POST',
+                data:{
+                    'name':document.getElementById("model_name").value
+                },
+                success:function(data) {
+                    alert("模型已保存")
+                }
+            })
+        }
+        </script>
+
+
+
+    </body>
+</html>

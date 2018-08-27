@@ -11,12 +11,18 @@ import numpy as np
 import json
 from classifier import Classifier
 from classifier import load_classifier
+
+from regression import Regression
+from regression import load_regression
 import csv
 
 app = Flask(__name__)
 csv_path = 'csv/wine.csv'
 classifier = None
 classifier_clf = None
+
+regression = None
+regression_clf = None
 
 @app.route('/')
 def hello_world():
@@ -34,6 +40,10 @@ def picture_classifier():
 @app.route('/train/classifier.html')
 def classifier():
     return render_template('train/classifier.html')
+
+@app.route('/train/regression.html')
+def regression():
+    return render_template('train/regression.html')
 
 # @app.route('/classfier-upload', methods=['GET', 'POST'])
 # def upload_classifier_file():
@@ -82,6 +92,46 @@ def classifier_save():
         name = request.form.get('name')
         global classifier
         classifier.save_clf(name)
+        return jsonify(None)
+
+@app.route('/regression-upload', methods=['GET', 'POST'])
+def upload_regression_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        global csv_path
+        csv_path = "csv/" + f.filename
+        f.save(csv_path)
+    return jsonify("ok")
+
+@app.route('/regression-train', methods=['GET', 'POST'])
+def regression_train():
+    if request.method == 'POST':
+        global csv_path
+        global regression
+        param = request.form.get('param')
+        param_dict = {}
+        param_list = param.split('&')
+        for p in param_list:
+            tmp = p.split('=')
+            if tmp[0] == 'n_estimators':
+                tmp[1] = int(tmp[1])
+            elif tmp[0] == 'max_features ':
+                tmp[1] = str(tmp[1])
+            elif tmp[0] == 'max_depth':
+                tmp[1] = int(tmp[1])
+            param_dict[tmp[0]] = tmp[1]
+
+        regression = Regression(csv_path, param_dict)
+        score = regression.get_score()
+        re = {"score":score}
+        return jsonify(re)
+
+@app.route('/regression-save', methods=['GET', 'POST'])
+def regression_save():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        global regression
+        regression.save_clf(name)
         return jsonify(None)
 
 #model
