@@ -221,10 +221,10 @@
             picClassfierTimer = window.setInterval(function () {
                 $.ajax({
                     type: 'GET',
-                    url: '',
+                    url: '/picture-classifier-params',
                     success: function (data) {
                         // data就是Log信息
-
+                        console.log(data)
                     }
                 })
             }, 500) // 1000ms
@@ -239,7 +239,7 @@
         $.ajax({
             // todo...
             type: 'GET',
-            url: '',
+            url: '/picture-classifier-params',
             data: {
                 'signal': 'STOP'
             },
