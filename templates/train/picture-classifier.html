@@ -171,7 +171,7 @@
         var learnRateVal = $('#learnRate').val()
         var $trainButton = $('#trainButton')
         //var learnRateVal = $learnRate.val()
-        var batchSzie = $('#batch_size').val()
+        var batchSize = $('#batch_size').val()
         var excludeScopes = $('#exclude_scopes').val()
         var trainScopes = $('#train_scopes').val()
         var optimizer = $('#optimizer').val()
@@ -193,7 +193,7 @@
                 url: '/picture-classifier-params',
                 data: {
                     learnRateVal: learnRateVal, // 发送的数据
-                    batchSzie: batchSzie,
+                    batchSize: batchSize,
                     checkPointPath: checkPointPath,
                     trainDir: trainDir,
                     excludeScopes: excludeScopes,

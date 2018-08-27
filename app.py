@@ -156,7 +156,7 @@ def upload_pic_file():
 @app.route('/picture-classifier-params', methods=['GET', 'POST'])
 def get_pic_train_params():
     if request.method == 'POST':
-        params = {'learnRate': request.form.get('learnRateVal'), 'batchSzie': request.form.get('batchSzie'),
+        params = {'learnRate': request.form.get('learnRateVal'), 'batchSize': request.form.get('batchSize'),
                   'checkPointPath': request.form.get('checkPointPath'), 'trainDir': request.form.get('trainDir'),
                   'excludeScopes': request.form.get('excludeScopes'), 'trainScopes': request.form.get('trainScopes'),
                   'optimizer': request.form.get('optimizer'), 'datasetName': request.form.get('datasetName'),
