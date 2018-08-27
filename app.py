@@ -240,7 +240,7 @@ def get_pic_train_params():
     if request.method == 'GET' and p is not None:
         signal = request.args.get('signal')
         print(signal)
-        if signal is None:
+        if signal == 'LOG':
             # p.stdout.seek(0, 2)
             # size += p.stdout.tell()
             data = p.stdout.read()
