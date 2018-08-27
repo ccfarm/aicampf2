@@ -26,9 +26,9 @@
                 <table class="layui-table">
                     <tbody>
                         <tr>
-                            <th>参数1</th>
+                            <th>参数</th>
                             <td>
-                                <input type="text" name="aug1" value ="默认值">
+                                <input class="layui-input" type="text" id="param" name="param" value ="penalty=l2&tol=1e-4&C=1.0&max_iter=100">
                             </td></tr>
                     </tbody>
                 </table>
@@ -60,7 +60,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" id="model_name" value="输入模型名称">
+                                <input class="layui-input" type="text" id="model_name" value="输入模型名称">
                             </td>
                             <td >
                                 <input type="button" value="保存模型" onclick="save()">
@@ -96,7 +96,7 @@
                 url:'/classifier-train',
                 type:'POST',
                 data:{
-                    message:"hello"
+                    'param':document.getElementById("param").value
                 },
                 success:function(data) {
                     $("#score").html("模型得分" + data['score']);

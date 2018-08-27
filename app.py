@@ -56,13 +56,22 @@ def upload_classifier_file():
 @app.route('/classifier-train', methods=['GET', 'POST'])
 def classifier_train():
     if request.method == 'POST':
-        #f = request.files['the_file']
-        #data = json.loads(request.form.get('data'))
-        # f.save("/csv/" + f.name)
-        # reader = csv.reader(f)
         global csv_path
         global classifier
-        classifier = Classifier(csv_path)
+        param = request.form.get('param')
+        param_dict = {}
+        param_list = param.split('&')
+        for p in param_list:
+            tmp = p.split('=')
+            if tmp[0] == 'tol':
+                tmp[1] = float(tmp[1])
+            elif tmp[0] == 'C':
+                tmp[1] = float(tmp[1])
+            elif tmp[0] == 'max_iter':
+                tmp[1] = int(tmp[1])
+            param_dict[tmp[0]] = tmp[1]
+
+        classifier = Classifier(csv_path, param_dict)
         score = classifier.get_score()
         re = {"score":score}
         return jsonify(re)
