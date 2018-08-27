@@ -89,7 +89,7 @@
             </div>
             <p><br></p>
             <div>
-                <textarea name="log" style="width:800px;height:400px;" readonly="readonly">log information:</textarea>
+                <textarea name="log" id="logTA" style="width:800px;height:400px;" readonly="readonly"></textarea>
             </div>
         </div>
     </fieldset>
@@ -227,7 +227,8 @@
                     },
                     success: function (data) {
                         // data就是Log信息
-                        console.log(data)
+                        //console.log(data)
+                        $('#logTA').val('Log Information: ' + data)
                     }
                 })
             }, 10000) // 1000ms
