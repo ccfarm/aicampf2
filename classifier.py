@@ -12,13 +12,24 @@ class Classifier:
         data = pd.read_csv(csv_path)
         X = data.iloc[:, 1:]
         y = data.iloc[:, 0]
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
         self.clf = LogisticRegression(**param_dict)
-        self.clf.fit(X_train, y_train)
-        self.score = self.clf.score(X_test, y_test)
+        self.clf.fit(X, y)
 
-    def get_score(self):
-        return self.score
+    def test_classifier(self, csv_path):
+        data = pd.read_csv(csv_path)
+        X = data.iloc[:, 1:]
+        y = data.iloc[:, 0]
+        yy = self.clf.predict(X)
+        y = list(y)
+        yy = list(yy)
+        size = len(y)
+        count = 0
+        for i in xrange(size):
+            if y[i] == yy[i]:
+                count += 1
+        p = float(count) / size
+        return {'p' : p}
+
 
     def save_clf(self, name):
         model_path = "model/" + name + ".m"
@@ -33,13 +44,6 @@ class Classifier:
         conn.close()
         return None
 
-
-    # def predict(self, csv):
-    #     X = pd.read_csv()
-    #     y = self.clf.predict(X)
-    #     data = pd.concat(y, X, axis=1)
-    #     data.to_csv()
-
 def load_classifier(id):
     conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
                                    , auth_plugin='mysql_native_password')
@@ -50,5 +54,3 @@ def load_classifier(id):
     conn.close()
     path = model[4]
     return joblib.load(path)
-
-
