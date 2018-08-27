@@ -26,7 +26,6 @@ csv_path = 'csv/wine.csv'
 classifier = None
 classifier_clf = None
 
-
 regression = None
 regression_clf = None
 
@@ -34,9 +33,7 @@ size = 0
 offset = 0
 p = None
 
-
 ALLOWED_EXTENSIONS = {'jpg', 'JPG', 'jpeg', 'JPEG', 'png'}
-
 
 
 @app.route('/')
@@ -58,6 +55,7 @@ def picture_classifier():
 @app.route('/train/classifier.html')
 def classifier():
     return render_template('train/classifier.html')
+
 
 @app.route('/train/regression.html')
 def regression():
@@ -126,6 +124,7 @@ def upload_regression_file():
         f.save(csv_path)
     return jsonify("ok")
 
+
 @app.route('/regression-train', methods=['GET', 'POST'])
 def regression_train():
     if request.method == 'POST':
@@ -146,8 +145,9 @@ def regression_train():
 
         regression = Regression(csv_path, param_dict)
         score = regression.get_score()
-        re = {"score":score}
+        re = {"score": score}
         return jsonify(re)
+
 
 @app.route('/regression-save', methods=['GET', 'POST'])
 def regression_save():
@@ -157,7 +157,8 @@ def regression_save():
         regression.save_clf(name)
         return jsonify(None)
 
-#model
+
+# model
 
 
 # model
@@ -244,12 +245,12 @@ def get_pic_train_params():
         signal = request.args.get('signal')
         print(signal)
         # if signal == 'LOG':
-            # p.stdout.seek(0, 2)
-            # size += p.stdout.tell()
-            # data = p.stdout.read()
-            # print(data)
-            # # offset = size
-            # return data
+        # p.stdout.seek(0, 2)
+        # size += p.stdout.tell()
+        # data = p.stdout.read()
+        # print(data)
+        # # offset = size
+        # return data
         if signal == 'STOP':
             p.kill()
             return 'Model stop train'
@@ -259,7 +260,8 @@ def get_pic_train_params():
 @app.route('/picture-eval', methods=['GET', 'POST'])
 def get_pic_eval_params():
     if request.method == 'POST':
-        params = {'datasetName_eval': request.form.get('datasetName_eval'), 'batchSize_eval': request.form.get('batchSize_eval'),
+        params = {'datasetName_eval': request.form.get('datasetName_eval'),
+                  'batchSize_eval': request.form.get('batchSize_eval'),
                   'maxNumBatches': request.form.get('maxNumBatches')}
         print(params)
     # base_path = path.abspath(path.dirname(__file__))
