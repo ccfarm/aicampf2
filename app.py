@@ -252,6 +252,7 @@ def get_pic_train_params():
             return data
         elif signal == 'STOP':
             p.kill()
+            return 'Model stop train'
     return redirect(url_for('picture_classifier'))
 
 

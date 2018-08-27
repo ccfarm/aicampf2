@@ -186,6 +186,7 @@
         var modelName = $('#model_name').val()
 
         var picClassfierTimer = null
+        var logInformation = ''
 
         $trainButton.on('click', function () {
             var checkPointPath = $('#ckpt').val()
@@ -227,67 +228,69 @@
                     },
                     success: function (data) {
                         // data就是Log信息
-                        //console.log(data)
-                        $('#logTA').val('Log Information: ' + data)
+                        console.log(data)
+                        logInformation += data
+                        $('#logTA').val('Log Information: ' + logInformation)
                     }
                 })
-            }, 10000) // 1000ms
+            }, 3000) // 1000ms
         })
 
-    })
+         $('#stopButton').on('click', function () {
+            // 清除ajax轮询定时器
+            window.clearInterval(picClassfierTimer)
+            // 在发送一个ajax请求，发送一个信号让后台关闭
+            $.ajax({
+                // todo...
+                type: 'GET',
+                url: '/picture-classifier-params',
+                data: {
+                    signal: 'STOP'
+                },
+                success: function (data) {
+                    alert(data)
+                }
+            })
+        })
 
-    $('#stopButton').on('click', function () {
-        // 清除ajax轮询定时器
-        window.clearInterval(picClassfierTimer)
-        // 在发送一个ajax请求，发送一个信号让后台关闭
-        $.ajax({
-            // todo...
-            type: 'GET',
-            url: '/picture-classifier-params',
-            data: {
-                signal: 'STOP'
-            },
-            success: function (data) {
-                alert("模型已经停止训练")
-            }
+        // 评估模型的函数
+        var datasetName_eval = $('#dataset_name_eval').val()
+        var batchSize_eval = $('#batch_size_eval').val()
+        var maxNumBatches = $('#max_num_batches').val()
+        $('#evalButton').on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: '/picture-eval',
+                data: {
+                    datasetName_eval: datasetName_eval, // 发送的数据
+                    batchSize_eval: batchSize_eval,
+                    maxNumBatches: maxNumBatches
+                },
+                success: function (data) {
+                    // 请求成功后，再次就收数据，参数data就是后端处理后返回给你的数据
+                    alert('开始评估模型')
+                }
+            })
+        })
+
+        //上传文件的代码
+        $('#uploadFileButton').on('click', function () {
+            $.ajax({
+                url: '/picture-classifier-upload',
+                type: 'POST',
+                data: new FormData($('#upload_pic_file')[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // todo ..
+                    alert("upload file success")
+                }
+            })
         })
     })
 
-    // 评估模型的函数
-    var datasetName_eval = $('#dataset_name_eval').val()
-    var batchSize_eval = $('#batch_size_eval').val()
-    var maxNumBatches = $('#max_num_batches').val()
-    $('#evalButton').on('click', function () {
-        $.ajax({
-            type: 'POST',
-            url: '/picture-eval',
-            data: {
-                datasetName_eval: datasetName_eval, // 发送的数据
-                batchSize_eval: batchSize_eval,
-                maxNumBatches: maxNumBatches
-            },
-            success: function (data) {
-                // 请求成功后，再次就收数据，参数data就是后端处理后返回给你的数据
-                alert('开始评估模型')
-            }
-        })
-    })
 
-    //上传文件的代码
-    $('#uploadFileButton').on('click', function () {
-        $.ajax({
-            url: '/picture-classifier-upload',
-            type: 'POST',
-            data: new FormData($('#upload_pic_file')[0]),
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                // todo ..
-                alert("upload file success")
-            }
-        })
-    })
 
 
 </script>
