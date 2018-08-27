@@ -6,6 +6,9 @@ import const
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import r2_score#R square
 
 class Regression:
     def __init__(self, csv_path,regression_config):
@@ -41,6 +44,18 @@ class Regression:
         conn.commit()
         cursor.close()
         return None
+
+    def test_regression(self, csv_path):
+        data = pd.read_csv(csv_path)
+        X = data.iloc[:, 1:]
+        y = data.iloc[:, 0]
+        yy = self.clf.predict(X)
+        y = list(y)
+        yy = list(yy)
+        mse = mean_squared_error(y,yy)
+        mae = mean_absolute_error(y,yy)
+
+        return {'p' : "mse : "+str(mse)+" , mae : "+str(mae)}
 
 def load_regression(id):
     conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database

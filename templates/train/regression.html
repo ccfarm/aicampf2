@@ -54,6 +54,31 @@
         </fieldset>
 
         <fieldset class="layui-elem-field">
+            <legend>模型测试</legend>
+
+            <div class="layui-field-box">
+
+                <div>
+                    <form  action="/regression-test" id="regression-test" enctype='multipart/form-data' method="post">
+                        <input type="file" name="file">
+                        <input type="button" value="测试" onclick="regressionTest()">
+                    </form>
+                </div>
+
+                <table class="layui-table" lay-skin="line">
+                    <tbody>
+                        <tr>
+                            <td>回归评价</td>
+                            <td>
+                                <a id="p"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
             <legend>训练成绩</legend>
             <div class="layui-field-box">
                 <table class="layui-table" lay-skin="line">
@@ -105,6 +130,22 @@
             })
         }
 
+        function regressionTest() {
+            var form_data = new FormData($('#regression-test')[0]);
+            $.ajax({
+                url:'/regression-test',
+                type:'POST',
+                data:form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: false,
+                success:function(data) {
+                    $("#p").html(data['p']);
+                }
+            })
+
+        }
 
         function save() {
             $.ajax({
