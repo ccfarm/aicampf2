@@ -234,15 +234,15 @@ def get_pic_train_params():
     p = Popen(cmd % (
     params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
     params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
-    params['batchSize']),shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-    global size, offset
+    params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    # //global size, offset
     if request.method == 'GET':
         signal = request.args.get('signal')
         if signal is None:
-            p.stdout.seek(0, 2)
-            size += p.stdout.tell()
-            data = p.stdout.read(size-offset)
-            offset = size
+            # p.stdout.seek(0, 2)
+            # size += p.stdout.tell()
+            data = p.stdout.read()
+            # offset = size
             return data
         elif signal == 'STOP':
             p.kill()
