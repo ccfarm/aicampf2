@@ -163,7 +163,7 @@ def get_pic_train_params():
                   'modelName': request.form.get('modelName')}
         print(params)
     # base_path = path.abspath(path.dirname(__file__))
-    with open('./uploads/file.txt', 'rb') as f:
+    with open('./uploads/path.txt', 'rb') as f:
         data_path = f.read().strip()
     cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s 
     --checkpoint_path=%s 
