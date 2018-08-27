@@ -41,15 +41,6 @@ def picture_classifier():
 def classifier():
     return render_template('train/classifier.html')
 
-# @app.route('/classfier-upload', methods=['GET', 'POST'])
-# def upload_classifier_file():
-#     if request.method == 'POST':
-#         f = request.files['file']
-#         global csv_path
-#         csv_path = "csv/" + f.filename
-#         f.save(csv_path)
-#     return redirect(url_for('classifier'))
-
 @app.route('/classfier-upload', methods=['GET', 'POST'])
 def upload_classifier_file():
     if request.method == 'POST':
@@ -88,6 +79,7 @@ def classifier_test():
         f.save(csv_path)
         global classifier
         re = classifier.test_classifier(csv_path)
+        print re
     return jsonify(re)
 
 @app.route('/classifier-save', methods=['GET', 'POST'])
@@ -140,17 +132,11 @@ def upload_pic_file():
     if request.method == 'POST':
         print('test hello')
         file = request.files['file']
-        # old_file_name = file.filename
-        # if file and allowed_files(old_file_name):
-        # filename = rename_filename(old_file_name)
-        # file_path = os.path.join(UPLOAD_FOLDER, filename)
-        # file.save(file_path)
         print(file.filename)
         base_path = path.abspath(path.dirname(__file__))
         upload_path = path.join(base_path, 'uploads/')
         file_name = upload_path + file.filename
         file.save(file_name)
-        print(file_name)
     return redirect(url_for('picture_classifier'))
 
 

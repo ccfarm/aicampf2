@@ -27,7 +27,7 @@ class Classifier:
         for i in xrange(size):
             if y[i] == yy[i]:
                 count += 1
-        p = count / size
+        p = float(count) / size
         return {'p' : p}
 
 
