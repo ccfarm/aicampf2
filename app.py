@@ -216,6 +216,7 @@ def upload_pic_file():
 
 @app.route('/picture-classifier-params', methods=['GET', 'POST'])
 def get_pic_train_params():
+    p = None
     if request.method == 'POST':
         params = {'learnRate': request.form.get('learnRateVal'), 'batchSize': request.form.get('batchSize'),
                   'checkPointPath': request.form.get('checkPointPath'), 'trainDir': request.form.get('trainDir'),
@@ -223,20 +224,20 @@ def get_pic_train_params():
                   'optimizer': request.form.get('optimizer'), 'datasetName': request.form.get('datasetName'),
                   'modelName': request.form.get('modelName')}
         print(params)
-    # base_path = path.abspath(path.dirname(__file__))
-    with open('./uploads/path.txt', 'rb') as f:
-        data_path = f.read().strip()
-    cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s 
-    --checkpoint_path=%s 
-    --checkpoint_exclude_scopes=%s --trainable_scopes=%s
-    --model_name=%s --train_dir=%s --learning_rate=%s
-    --optimizer=%s --batch_size=%s """
-    p = Popen(cmd % (
-    params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
-    params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
-    params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        # base_path = path.abspath(path.dirname(__file__))
+        with open('./uploads/path.txt', 'rb') as f:
+            data_path = f.read().strip()
+        cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s 
+        --checkpoint_path=%s 
+        --checkpoint_exclude_scopes=%s --trainable_scopes=%s
+        --model_name=%s --train_dir=%s --learning_rate=%s
+        --optimizer=%s --batch_size=%s """
+        p = Popen(cmd % (
+        params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
+        params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
+        params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     # //global size, offset
-    if request.method == 'GET':
+    if request.method == 'GET' and p is not None:
         signal = request.args.get('signal')
         if signal is None:
             # p.stdout.seek(0, 2)
