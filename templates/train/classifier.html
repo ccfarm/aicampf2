@@ -46,7 +46,7 @@
                 <div>
                     <form  action="/classfier-test" id="classfier-test" enctype='multipart/form-data' method="post">
                         <input type="file" name="file">
-                        <input type="button" value="上传" onclick="classifierTest()">
+                        <input type="button" value="测试" onclick="classifierTest()">
                     </form>
                 </div>
 
@@ -56,18 +56,6 @@
                             <td>准确率</td>
                             <td>
                                 <a id="p"></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>召回率</td>
-                            <td>
-                                <a id="r"></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>F1</td>
-                            <td>
-                                <a id="f1"></a>
                             </td>
                         </tr>
                     </tbody>
@@ -139,8 +127,6 @@
                 async: false,
                 success:function(data) {
                     $("#p").html(data['p']);
-                    $("#r").html(data['r']);
-                    $("#f1").html(data['f1']);
                 }
             })
 

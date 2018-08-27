@@ -7,91 +7,137 @@
             <table class="layui-table">
                 <tbody>
                 <tr>
-
                     <th>上传图片Tfrecord数据</th>
-                    <form action="" method=post enctype=multipart/form-data>
-                        <input title="点击选择" multiple type="file" name="fileUpload"/>
-                        <input type="submit" value="上传文件"/></form>
+                    <td>
+                        <form action="/picture-classifier-upload" id="upload_pic_file" method="POST"
+                              enctype="multipart/form-data">
+                            <input title="点击选择" multiple type="file" id="fileUpload" name="file"/>
+                            <input type="button" id="uploadFileButton" value="上传文件"/></form>
                     </td>
                 </tr>
                 <tr>
                     <th>learnig_rate</th>
                     <td>
-                        <input type="text" name="learning_rate" value="0.001">
-                    </td>
-
-                </tr>
-                <tr>
-                    <th>num_epoch2_per_decay</th>
-                    <td>
-                        <input type="text" name="num_epoch2_per_decay" value="2">
+                        <input type="text" name="learning_rate" id="learnRate" value="0.001">
                     </td>
 
                 </tr>
                 <tr>
                     <th>optimizer</th>
                     <td>
-                        <input type="text" name="optimizer" value="rmsprop">
+                        <input type="text" name="optimizer" id="optimizer" value="rmsprop">
                     </td>
                 </tr>
 
                 <tr>
                     <th>batch_size</th>
                     <td>
-                        <input type="text" name="batch_size" value="32">
+                        <input type="text" name="batch_size" id="batch_size" value="32">
                     </td>
                 </tr>
 
                 <tr>
                     <th>dataset_name</th>
                     <td>
-                        <input type="text" name="dataset_name" value="cifar10">
+                        <input type="text" name="dataset_name" id="dataset_name" value="cifar10">
                     </td>
                 </tr>
 
                 <tr>
                     <th>checkpoint_path</th>
                     <td>
-                        <input type="text" name="checkpoint_path" value="">
+                        <input required type="text" name="checkpoint_path" id="ckpt" value="./tmp/pnasnet-5_large_2017_12_13/model.ckpt">
                     </td>
                 </tr>
 
                 <tr>
                     <th>train_dir</th>
                     <td>
-                        <input type="text" name="train_dir" value="">
+                        <input required type="text" name="train_dir" id="train_dir" value="./tmp/pnasnet-model">
                     </td>
                 </tr>
 
                 <tr>
                     <th>model_name</th>
                     <td>
-                        <input type="text" name="model_name" value="pnasnet_large">
+                        <input type="text" name="model_name" id="model_name" value="pnasnet_large">
                     </td>
                 </tr>
                 <tr>
                     <th>checkpoint_exclude_scopes</th>
                     <td>
-                        <input type="text" name="checkpoint_exclude_scopes" value="final_layer,aux7">
+                        <input type="text" name="checkpoint_exclude_scopes" id="exclude_scopes"
+                               value="final_layer,aux7">
                     </td>
                 </tr>
                 <tr>
                     <th>trainable_scopes</th>
                     <td>
-                        <input type="text" name="trainable_scopes" value="final_layer,aux7">
+                        <input type="text" name="trainable_scopes" id="train_scopes" value="final_layer,aux7">
                     </td>
                 </tr>
 
                 </tbody>
             </table>
             <div>
-                <input type="button" name="train" style="width:80px;height:40px;" value="训练">
+                <input type="button" name="train" style="width:80px;height:40px;" value="训练" id="trainButton">
             </div>
             <p><br></p>
             <div>
                 <textarea name="log" style="width:800px;height:400px;" readonly="readonly">log information:</textarea>
             </div>
-<<<<<<< HEAD
+        </div>
+    </fieldset>
+    <fieldset class="layui-elem-field">
+        <legend>模型评估</legend>
+        <div class="layui-field-box">
+            <table class="layui-table">
+                <tbody>
+                <tr>
+                    <th>dataset_name</th>
+                    <td>
+                        <input type="text" name="dataset_name_eval" id="dataset_name_eval" value="cifar10">
+                    </td>
+                </tr>
+                <tr>
+                    <th>batch_size</th>
+                    <td>
+                        <input type="text" name="batch_size_eval" id="batch_size_eval" value="8">
+                    </td>
+                </tr>
+                <tr>
+                    <th>max_num_batches</th>
+                    <td>
+                        <input type="text" name="max_num_batches" id="max_num_batches" value="128">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <input type="button" name="train" style="width:80px;height:40px;" value="评估" id="evalButton">
+            </div>
+            <p><br></p>
+            <div>
+                <textarea name="log" style="width:800px;height:200px;" readonly="readonly">log information:</textarea>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="layui-elem-field">
+        <legend>模型导出</legend>
+        <div class="layui-field-box">
+            <table class="layui-table">
+                <tbody>
+                <tr>
+                    <th>模型导出路径</th>
+                    <td>
+                        <input type="text" name="export_graph" style="width:400px;height:20px;" value="frozen_model.pb">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <input type="button" name="train" style="width:160px;height:40px;" value="导出模型并冻结权重">
+            </div>
         </div>
     </fieldset>
     <fieldset class="layui-elem-field">
@@ -114,23 +160,72 @@
     </fieldset>
 
 </div>
+
+</body>
+
+</fieldset>
+
+</div>
 <script>
-    var _hmt = _hmt || [];
-    (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
+    $(function () {
+        var learnRateVal = $('#learnRate').val()
+        var $trainButton = $('#trainButton')
+        //var learnRateVal = $learnRate.val()
+        var batchSzie = $('#batch_size').val()
+        var excludeScopes = $('#exclude_scopes').val()
+        var trainScopes = $('#train_scopes').val()
+        var optimizer = $('#optimizer').val()
+        var datasetName = $('#dataset_name').val()
+        var modelName = $('#model_name').val()
+        $trainButton.on('click', function () {
+            var checkPointPath = $('#ckpt').val()
+            var trainDir = $('#train_dir').val()
+             if (checkPointPath.length == 0) {
+                alert('please input checkpoint_path')
+                return
+            }
+            if (trainDir.length == 0) {
+                alert('please input train_dir')
+                return
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/picture-classifier-params',
+                data: {
+                    learnRateVal: learnRateVal, // 发送的数据
+                    batchSzie: batchSzie,
+                    checkPointPath: checkPointPath,
+                    trainDir: trainDir,
+                    excludeScopes: excludeScopes,
+                    trainScopes: trainScopes,
+                    optimizer: optimizer,
+                    datasetName: datasetName,
+                    modelName: modelName
+                },
+                success: function (data) {
+                    // 请求成功后，再次就收数据，参数data就是后端处理后返回给你的数据
+                    // Todo with data...
+                }
+            })
+        })
+
+        $('#uploadFileButton').on('click', function () {
+            $.ajax({
+                url: '/picture-classifier-upload',
+                type: 'POST',
+                data: new FormData($('#upload_pic_file')[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // todo ..
+                    alert("upload file success")
+                }
+            })
+        })
+    })
+
+
 </script>
 </body>
-=======
-        </fieldset>
-
-    </div>
-        <script>
-
-        </script>
-    </body>
->>>>>>> dev_forwc
 </html>

@@ -22,8 +22,14 @@ class Classifier:
         yy = self.clf.predict(X)
         y = list(y)
         yy = list(yy)
-        print y
-        print yy
+        size = len(y)
+        count = 0
+        for i in xrange(size):
+            if y[i] == yy[i]:
+                count += 1
+        p = count / size
+        return {'p' : p}
+
 
     def save_clf(self, name):
         model_path = "model/" + name + ".m"
