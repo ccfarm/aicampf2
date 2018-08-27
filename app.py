@@ -168,8 +168,8 @@ def get_pic_train_params():
     cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s 
     --checkpoint_path=%s 
     --checkpoint_exclude_scopes=%s --trainable_scopes=%s
-    --model_name=%s --train_dir=%s --learning_rate=%
-    --optimizer=%s --batch_size=%s"""
+    --model_name=%s --train_dir=%s --learning_rate=%s
+    --optimizer=%s --batch_size=%s """
     os.system(cmd % (
     params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
     params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
