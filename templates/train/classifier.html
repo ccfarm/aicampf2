@@ -57,7 +57,7 @@
             <div class="layui-field-box">
 
                 <div>
-                    <form  action="/classfier-test" id="classfier-test" enctype='multipart/form-data' method="post">
+                    <form  action="/classifer-test" id="classifier-test" enctype='multipart/form-data' method="post">
                         <input type="file" name="file">
                         <input type="button" value="测试" onclick="classifierTest()">
                     </form>
@@ -77,7 +77,7 @@
         </fieldset>
 
         <fieldset class="layui-elem-field">
-            <legend>保存模型</legend>
+            <legend>训练成绩</legend>
             <div class="layui-field-box">
                 <table class="layui-table" lay-skin="line">
                     <tbody>
@@ -122,16 +122,16 @@
                     'param':document.getElementById("param").value
                 },
                 success:function(data) {
-                    alert("训练成功")
+                    $("#score").html("模型得分" + data['score']);
                 }
 
             })
         }
 
         function classifierTest() {
-            var form_data = new FormData($('#classfier-test')[0]);
+            var form_data = new FormData($('#classifier-test')[0]);
             $.ajax({
-                url:'/classfier-test',
+                url:'/classifier-test',
                 type:'POST',
                 data:form_data,
                 contentType: false,
@@ -144,7 +144,6 @@
             })
 
         }
-
 
         function save() {
             $.ajax({
