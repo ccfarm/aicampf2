@@ -284,7 +284,7 @@ def get_pic_eval_params():
     # base_path = path.abspath(path.dirname(__file__))
     # with open('./uploads/path.txt', 'rb') as f:
     #     data_path = f.read().strip()
-    cmd = """python eval_image_classifier.py --dataset_name=%s --dataset_dir=./slim/tmp/cifar10 \
+    cmd = """python ./slim/eval_image_classifier.py --dataset_name=%s --dataset_dir=./slim/tmp/cifar10 \
     --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./slim/tmp/pnasnet-5_large_2017_12_13 \
     --eval_dir=./slim/tmp/pnasnet-model --batch_size=%s --max_num_batches=%s"""
     os.system(cmd % (params['datasetName_eval'], params['batchSize_eval'], params['maxNumBatches']))
