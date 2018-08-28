@@ -1,0 +1,56 @@
+{% include 'common/header.html' %}
+
+<body>
+<div class="x-body">
+    <h2>请上传一张图片</h2>
+    <form class="layui-form" action="/model/picture-inference" id="upload_pic_file" method="POST"
+          enctype="multipart/form-data">
+        <input title="点击选择" multiple type="file" id="fileUpload" name="file"/>
+        <input type="button" id="uploadPicButton" value="上传图片"/></form>
+    <br>
+    <div>
+        <input type="button" name="inference" style="width:80px;height:40px;" value="预测" id="inferenceButton">
+    </div>
+    <p><br></p>
+    <div>
+        <textarea name="result" id="result" style="width:80px;height:40px;" readonly="readonly"></textarea>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        //上传文件的代码
+        $('#uploadFileButton').on('click', function () {
+            $.ajax({
+                url: '/model/picture-inference',
+                type: 'POST',
+                data: new FormData($('#upload_pic_file')[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // todo ..
+                    alert("图片上传成功")
+                }
+            })
+        })
+        $('#inferenceButton').on('click', function () {
+            // 在发送一个ajax请求，发送一个信号让后台预测
+            $.ajax({
+                // todo...
+                type: 'GET',
+                url: '/model/picture-inference',
+                data: {
+                    signal: 'INF'
+                },
+                success: function (data) {
+                    $('#result').val('预测结果: ' + data)
+                }
+            })
+        })
+
+    })
+</script>
+</body>
+
+</html>
