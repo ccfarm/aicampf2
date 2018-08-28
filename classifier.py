@@ -44,7 +44,7 @@ class Classifier:
                                        ,auth_plugin='mysql_native_password')
         cursor = conn.cursor()
         cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address, model_config) '
-                       'values (%s, %s, %s, %s)', [name, 'LR', 'classification', model_path, self.param])
+                       'values (%s, %s, %s, %s, %s)', [name, 'LR', 'classification', model_path, self.param])
         conn.commit()
         cursor.close()
         conn.close()
