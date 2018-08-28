@@ -192,6 +192,7 @@ def use_model():
 
 @app.route('/model/picture-inference', methods=['GET', 'POST'])
 def classifier_predict():
+    print('classfier_predict')
     if request.method == 'POST':
         print('ENTER POST')
         global inference_file_path
