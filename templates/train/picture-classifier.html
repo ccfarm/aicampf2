@@ -123,7 +123,7 @@
             </div>
             <p><br></p>
             <div>
-                <textarea name="log" style="width:800px;height:200px;" readonly="readonly">log information:</textarea>
+                <textarea name="log" id="logEval" style="width:800px;height:200px;" readonly="readonly">log information:</textarea>
             </div>
         </div>
     </fieldset>
@@ -257,6 +257,7 @@
         var datasetName_eval = $('#dataset_name_eval').val()
         var batchSize_eval = $('#batch_size_eval').val()
         var maxNumBatches = $('#max_num_batches').val()
+        var logInformation_eval = ''
         $('#evalButton').on('click', function () {
             $.ajax({
                 type: 'POST',
@@ -271,6 +272,23 @@
                     alert('评估模型')
                 }
             })
+
+            // ajax轮询获取Eval log信息
+            picClassfierTimer = window.setInterval(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/pict-classifier-getEvalLog',
+                    data: {
+                      signal: 'LOG'
+                    },
+                    success: function (data) {
+                        // data就是Log信息
+                        console.log(data)
+                        logInformation_eval += data
+                        $('#logEval').val('Log Information: ' + logInformation_eval)
+                    }
+                })
+            }, 5000) // 5000ms
         })
 
         // 导出模型的函数
