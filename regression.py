@@ -13,6 +13,7 @@ from sklearn.metrics import r2_score#R square
 class Regression:
     def __init__(self, csv_path,regression_config):
         data = pd.read_csv(csv_path)
+        data.fillna(value=0,inplace=True)
         self.param = str(regression_config)
         X = data.iloc[:, 1:]
         y = data.iloc[:, 0]

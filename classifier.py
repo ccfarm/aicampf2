@@ -11,6 +11,7 @@ class Classifier:
     def __init__(self, csv_path, param_dict):
         data = pd.read_csv(csv_path)
         self.param = str(param_dict)
+        data.fillna(value=0,inplace=True)
         X = data.iloc[:, 1:]
         y = data.iloc[:, 0]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
