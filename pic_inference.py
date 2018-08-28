@@ -35,6 +35,8 @@ import numpy as np
 from six.moves import urllib
 import tensorflow as tf
 
+print(sys.getdefaultencoding())
+
 app = Flask(__name__)
 model_id = None
 model_file_path = None
@@ -203,12 +205,12 @@ def classifier_predict():
         f = request.files['file']
         # base_path = path.abspath(path.dirname(__file__))
         # upload_path = path.join('/static/upload/', f.filename)
-        inference_file_path = '/static/upload/' + f.filename
+        inference_file_path = 'static/upload/' + f.filename
         f.save(inference_file_path)
         print(f.filename)
         pred, scores, top_names = run_inference_on_image(inference_file_path, sess)
 
-        new_url = inference_file_path
+        new_url = 'http://39.104.63.247:675/'+inference_file_path
         image_tag = '<img src="%s"></img><p>'
         new_tag = image_tag % new_url
 
