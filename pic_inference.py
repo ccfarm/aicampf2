@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding:UTF-8 -*-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -195,12 +195,7 @@ def classifier_predict():
     print('classfier_predict')
     result = """
         <!doctype html>
-        <title>车辆检测项目</title>
-        <h1>请上传一张需要检测汽车的照片吧！</h1>
-        <form action="" method=post enctype=multipart/form-data>
-          <p><input type=file name=file value='选择图片'>
-          <br/><br/>
-             <input type=submit value='上传预测'></form>
+        <title>Picture classify</title>
         <p>%s</p>
         """ % "<br>"
     if request.method == 'POST':
@@ -218,10 +213,10 @@ def classifier_predict():
         image_tag = '<img src="%s"></img><p>'
         new_tag = image_tag % new_url
 
-        format_string = '<b>图片中分类结果如下：</b><br/>'
+        format_string = '<b><h3>the result is as below：<h3></b><br/>'
 
         for i in range(5):
-            format_string += "%s (相似度:%.5f&#37;)<BR>" % (top_names[i], scores[i] * 100)
+            format_string += "%s (similarity:%.5f&#37;)<BR>" % (top_names[i], scores[i] * 100)
             format_string += '\n'
         return new_tag + format_string + '<BR>'
     return redirect(url_for('classifier_predict'))
