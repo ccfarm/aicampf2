@@ -201,7 +201,7 @@ def classifier_predict():
         """ % "<br>"
     if request.method == 'POST':
         print('ENTER POST')
-        global inference_file_path, model_file_path, label_file
+        global inference_file_path, model_file_path, label_file, port
         f = request.files['file']
         # base_path = path.abspath(path.dirname(__file__))
         # upload_path = path.join('/static/upload/', f.filename)
@@ -210,7 +210,7 @@ def classifier_predict():
         print(f.filename)
         pred, scores, top_names = run_inference_on_image(inference_file_path, sess)
 
-        new_url = 'http://39.104.63.247:675/'+inference_file_path
+        new_url = 'http://39.104.63.247:' + str(port) + '/' + inference_file_path
         image_tag = '<img src="%s"></img><p>'
         new_tag = image_tag % new_url
 
@@ -229,6 +229,7 @@ if __name__ == '__main__':
     model_file = sys.argv[3]
     label_file = sys.argv[4]
     # image_file = sys.argv[5]
+    port = sys.argv[2]
     graph = tf.Graph()
     with graph.as_default():
         classify_graph_def = tf.GraphDef()
@@ -240,7 +241,7 @@ if __name__ == '__main__':
             _ = tf.import_graph_def(graph_def, name='')
             sess = tf.Session(graph=graph)
 
-    app.run(host='0.0.0.0', port=sys.argv[2], debug=False)
+    app.run(host='0.0.0.0', port=port, debug=False)
     # global model_id
     # model_id = 5
     # app.run(host='0.0.0.0', port="3444")
