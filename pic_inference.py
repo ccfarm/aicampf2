@@ -222,11 +222,12 @@ if __name__ == '__main__':
         classify_graph_def = tf.GraphDef()
         print('classify_graph_def = tf.GraphDef()')
         with tf.gfile.GFile(model_file, 'rb') as f:
-            classify_graph_def.ParseFromString(f.read())
-            tf.import_graph_def(classify_graph_def, name='')
-            print('tf.import_graph_def(classify_graph_def, name='')')
-            classify_sess = tf.Session(graph=graph)
-            print('classify_sess = tf.Session(graph=graph)')
+            # with open(model_file, 'rb') as f:
+            graph_def = tf.GraphDef()
+            graph_def.ParseFromString(f.read())
+            _ = tf.import_graph_def(graph_def, name='')
+            sess = tf.Session(graph=graph)
+
     run_inference_on_image('./slim/test.jpg', model_file_path, label_file)
     app.run(host='0.0.0.0', port=sys.argv[2], debug=False)
     # global model_id
