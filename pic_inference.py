@@ -202,7 +202,7 @@ def classifier_predict():
         inference_file_path = upload_path + f.filename
         f.save(inference_file_path)
         print(f.filename)
-        pred, scores, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
+        pred, scores, top_names = run_inference_on_image(inference_file_path, sess)
         string = ''
         for i in range(5):
             string += top_names[i] + " " + str(scores[i])
@@ -228,8 +228,8 @@ if __name__ == '__main__':
             _ = tf.import_graph_def(graph_def, name='')
             sess = tf.Session(graph=graph)
 
-    run_inference_on_image('./slim/test.jpg', sess)
     app.run(host='0.0.0.0', port=sys.argv[2], debug=False)
     # global model_id
     # model_id = 5
     # app.run(host='0.0.0.0', port="3444")
+    run_inference_on_image('./slim/test.jpg', sess)
