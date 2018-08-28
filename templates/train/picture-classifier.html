@@ -119,7 +119,7 @@
                 </tbody>
             </table>
             <div>
-                <input type="button" name="train" style="width:80px;height:40px;" value="评估" id="evalButton">
+                <input type="button" name="eval" style="width:80px;height:40px;" value="评估" id="evalButton">
             </div>
             <p><br></p>
             <div>
@@ -268,7 +268,7 @@
                 },
                 success: function (data) {
                     // 请求成功后，再次就收数据，参数data就是后端处理后返回给你的数据
-                    alert('开始评估模型')
+                    alert('评估模型')
                 }
             })
         })
