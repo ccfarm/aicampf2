@@ -151,7 +151,7 @@ def run_inference_on_image(image, model_file=None, label_file=None):
         # Creates node ID --> English string lookup.
         node_lookup = NodeLookup(label_file)
 
-        top_k = predictions.argsort()[-FLAGS.num_top_predictions:][::-1]
+        top_k = predictions.argsort()[-5:][::-1]
         top_names = []
         for node_id in top_k:
             human_string = node_lookup.id_to_string(node_id)
@@ -203,9 +203,13 @@ def classifier_predict():
             print('file saved to %s' % inference_file_path)
             return redirect(url_for('classifier_predict'))
     if request.method == 'GET':
-        global inference_file_path, model_file_path, label_file
-        pred, top_k, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
-        return str(top_k) + str(top_names)
+        print('enter get method')
+        signal = request.args.get('signal')
+        print(signal)
+        if signal == 'INF':
+            global inference_file_path, model_file_path, label_file
+            pred, top_k, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
+            return str(top_k) + str(top_names)
 
 
 if __name__ == '__main__':
