@@ -153,12 +153,14 @@ def run_inference_on_image(image, model_file=None, label_file=None):
 
         top_k = predictions.argsort()[-5:][::-1]
         top_names = []
+        scores = []
         for node_id in top_k:
             human_string = node_lookup.id_to_string(node_id)
             top_names.append(human_string)
             score = predictions[node_id]
+            scores.append(score)
             print('id:[%d] name:[%s] (score = %.5f)' % (node_id, human_string, score))
-    return predictions, top_k, top_names
+    return predictions, scores, top_names
 
 
 def main(_):
@@ -202,9 +204,14 @@ def classifier_predict():
         inference_file_path = upload_path + f.filename
         f.save(inference_file_path)
         print(f.filename)
-        pred, top_k, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
-        return str(top_k) + str(top_names)
+        pred, scores, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
+        string = ''
+        for i in range(5):
+            string += top_names[i] + " " + str(scores[i])
+            string += '\n'
+        return string
     return redirect(url_for('classifier_predict'))
+
 
 if __name__ == '__main__':
     app.debug = False
