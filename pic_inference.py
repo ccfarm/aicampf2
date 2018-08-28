@@ -202,9 +202,9 @@ def classifier_predict():
         print('ENTER POST')
         global inference_file_path, model_file_path, label_file
         f = request.files['file']
-        base_path = path.abspath(path.dirname(__file__))
-        upload_path = path.join(base_path, 'static/upload/')
-        inference_file_path = upload_path + f.filename
+        # base_path = path.abspath(path.dirname(__file__))
+        # upload_path = path.join('/static/upload/', f.filename)
+        inference_file_path = './static/upload/' + f.filename
         f.save(inference_file_path)
         print(f.filename)
         pred, scores, top_names = run_inference_on_image(inference_file_path, sess)
