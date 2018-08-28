@@ -29,7 +29,6 @@ classifier_clf = None
 def use_model():
     global classifier_clf
     global model_id
-    print model_id
     classifier_clf = load_classifier(model_id)
     return render_template('/model/use-model.html')
 
