@@ -324,7 +324,7 @@ def get_pic_export():
         cmd1 = """python ./slim/export_inference_graph_new.py --model_name=pnasnet_large --batch_size=1 \
         --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --output_file=pnasnet_graph_def.pb"""
         os.system(cmd1)
-        all_files = os.listdir(r'C:\Users\admin\Desktop\project\vehicle detection\slim\tmp\pnasnet-model')
+        all_files = os.listdir(r'./slim/tmp/pnasnet-model')
         maxnum = '0'
         maxfile = None
         for file in all_files:
