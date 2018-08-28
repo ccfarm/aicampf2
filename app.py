@@ -333,7 +333,7 @@ def get_pic_export():
                 if num > maxnum:
                     maxnum = num
                     maxfile = file
-        maxfile = maxfile.rsplit('.', maxsplit=1)[0]
+        maxfile = maxfile.split('.')[0] + maxfile.split('.')[1]
         cmd2 = """python ./slim/freeze_graph.py --input_graph=pnasnet_graph_def.pb \
         --input_checkpoint=./tmp/pnasnet-model/%s --output_graph=%s \
          --output_node_names=output --input_binary=True"""
