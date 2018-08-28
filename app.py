@@ -20,6 +20,7 @@ import os
 import uuid
 from os import path
 from subprocess import Popen, PIPE, STDOUT
+import mysql.connector
 
 app = Flask(__name__)
 csv_path = 'csv/wine.csv'
