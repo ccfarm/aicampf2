@@ -39,6 +39,7 @@ import tensorflow as tf
 app = Flask(__name__)
 model_id = None
 model_file_path = None
+inference_file_path = None
 
 
 FLAGS = tf.app.flags.FLAGS
@@ -170,32 +171,7 @@ def run_inference(modelfile, labelfile, image):
     pred,top_k,top_names = run_inference_on_image(image, modelfile, labelfile)
     return pred, top_k, top_names
 
-
-@app.route('/')
-def use_model():
-    global model_file_path
-    global model_id
-    model_file_path = load_classifier(model_id)
-    return render_template('/model/pic-inference.html')
-
-
-@app.route('/model/picture-inference', methods=['GET', 'POST'])
-def classifier_predict():
-    if request.method == 'POST':
-        file = request.files['file']
-        old_file_name = file.filename
-        if file and allowed_files(old_file_name):
-            filename = rename_filename(old_file_name)
-            file_path = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(file_path)
-            print('file saved to %s' % file_path)
-            return redirect(url_for('classifier_predict'))
-    if request.method == 'GET':
-        global image, model_file_path, label_file
-        pred, top_k, top_names = run_inference_on_image(image, model_file_path, label_file)
-        return str(top_k) + str(top_names)
-
-def load_classifier(id):
+def get_model_path(id):
     conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
                                    , auth_plugin='mysql_native_password')
     cursor = conn.cursor()
@@ -206,12 +182,38 @@ def load_classifier(id):
     path = model[4]
     return path
 
+@app.route('/')
+def use_model():
+    global model_file_path
+    global model_id
+    model_file_path = get_model_path(model_id)
+    return render_template('/model/pic-inference.html')
+
+
+@app.route('/model/picture-inference', methods=['GET', 'POST'])
+def classifier_predict():
+    if request.method == 'POST':
+        global inference_file_path
+        file = request.files['file']
+        old_file_name = file.filename
+        if file and allowed_files(old_file_name):
+            filename = rename_filename(old_file_name)
+            inference_file_path = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(inference_file_path)
+            print('file saved to %s' % inference_file_path)
+            return redirect(url_for('classifier_predict'))
+    if request.method == 'GET':
+        global inference_file_path, model_file_path, label_file
+        pred, top_k, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
+        return str(top_k) + str(top_names)
+
+
 if __name__ == '__main__':
     app.debug = False
     model_id = sys.argv[1]
-    # model_file = sys.argv[3]
-    label_file = sys.argv[3]
-    image_file = sys.argv[4]
+    model_file = sys.argv[3]
+    label_file = sys.argv[4]
+    # image_file = sys.argv[5]
     graph = tf.Graph()
     # with graph.as_default():
     #     classify_graph_def = tf.GraphDef()

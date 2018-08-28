@@ -197,14 +197,32 @@ def use_model(id):
     classifier_clf = load_classifier(id)
     return render_template('/model/use-model.html')
 
+def get_model_effect(id):
+    conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
+                                   , auth_plugin='mysql_native_password')
+    cursor = conn.cursor()
+    cursor.execute('select model_zuoyong from model_manage where id = %s', [id])
+    model = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    effect = model[3]
+    path = model[4]
+    return effect, model_path
+
+
 @app.route('/model/start-model/<int:id>')
 def start_model(id):
     port = "67" + str(id)
-    url = "http://127.0.0.1:" + port
+    url = "http://39.104.63.247:" + port
     global model_online_map
     global model_popen_map
     model_online_map[id] = url
-    p = Popen("python app_classifier.py " + str(id) + " " + port, shell=True, stdout=PIPE)
+    effect, model_path = get_model_effect(id)
+    if effect == 'pic_classification':
+        cmd = """python pic_inference.py %s %s %s ./slim/data/labels.txt"""
+        p = Popen(cmd % (str(id), port, model_path), shell=True, stdout=PIPE)
+    else:
+        p = Popen("python app_classifier.py " + str(id) + " " + port, shell=True, stdout=PIPE)
     model_popen_map[id] = p
     return redirect(url_for('model_list'))
 
