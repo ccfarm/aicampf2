@@ -213,7 +213,7 @@ def classifier_predict():
         image_tag = '<img src="%s"></img><p>'
         new_tag = image_tag % new_url
 
-        format_string = '<b><h3>the result is as below：<h3></b><br/>'
+        format_string = '<b><h3>the result is as below:<h3></b><br/>'
 
         for i in range(5):
             format_string += "%s (similarity:%.5f&#37;)<BR>" % (top_names[i], scores[i] * 100)
