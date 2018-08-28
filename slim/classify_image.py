@@ -154,6 +154,13 @@ def main(_):
     run_inference_on_image(image)
 
 
+def run_inference():
+    image = (FLAGS.image_file if FLAGS.image_file else
+             os.path.join(FLAGS.model_dir, 'test.jpg'))
+    pred,top_k,top_names = run_inference_on_image(image)
+    return pred, top_k, top_names
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # classify_image_graph_def.pb:

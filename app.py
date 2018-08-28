@@ -299,10 +299,24 @@ def get_pic_train_params():
     return redirect(url_for('picture_classifier'))
 
 
+@app.route('/picture-eval', methods=['GET', 'POST'])
+def get_pic_eval_params():
+    print('eval_function')
+    if request.method == 'POST':
+        params = {'datasetName_eval': request.form.get('datasetName_eval'),
+                  'batchSize_eval': request.form.get('batchSize_eval'),
+                  'maxNumBatches': request.form.get('maxNumBatches')}
+        print(params)
+        cmd = """python ./slim/eval_image_classifier.py --dataset_name=%s --dataset_dir=./slim/tmp/cifar10 \
+        --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./slim/tmp/pnasnet-model \
+        --eval_dir=./slim/tmp/pnasnet-model --batch_size=%s --max_num_batches=%s"""
+        os.system(cmd % (params['datasetName_eval'], params['batchSize_eval'], params['maxNumBatches']))
+        return redirect(url_for('picture_classifier'))
+
 
 
 @app.route('/picture-model-export', methods=['GET', 'POST'])
-def get_pic_eval_params():
+def get_pic_export():
     if request.method == 'POST':
         params = {'modelSaveName': request.form.get('modelSaveName')}
         print(params)
@@ -310,10 +324,11 @@ def get_pic_eval_params():
         cmd1 = """python ./slim/export_inference_graph_new.py --model_name=pnasnet_large --batch_size=1 \
         --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --output_file=pnasnet_graph_def.pb"""
         os.system(cmd1)
-        cmd2 = """python freeze_graph.py --input_graph=pnasnet_graph_def.pb \
+        cmd2 = """python ./slim/freeze_graph.py --input_graph=pnasnet_graph_def.pb \
         --input_checkpoint=./tmp/pnasnet-model/model.ckpt-13 --output_graph=%s \
          --output_node_names=output --input_binary=True"""
         model_save_path = path.join(base_path, params['modelSaveName'])
+        print(model_save_path)
         os.system(cmd2 % model_save_path)
         return redirect(url_for('picture_classifier'))
 
