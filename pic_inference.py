@@ -193,15 +193,15 @@ def use_model():
 @app.route('/model/picture-inference', methods=['GET', 'POST'])
 def classifier_predict():
     if request.method == 'POST':
+        print('ENTER POST')
         global inference_file_path
-        file = request.files['file']
-        old_file_name = file.filename
-        if file and allowed_files(old_file_name):
-            filename = rename_filename(old_file_name)
-            inference_file_path = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(inference_file_path)
-            print('file saved to %s' % inference_file_path)
-            return redirect(url_for('classifier_predict'))
+        f = request.files['file']
+        base_path = path.abspath(path.dirname(__file__))
+        upload_path = path.join(base_path, 'uploads/')
+        inference_file_path = upload_path + f.filename
+        f.save(inference_file_path)
+        print(f.filename)
+        return redirect(url_for('classifier_predict'))
     if request.method == 'GET':
         print('enter get method')
         signal = request.args.get('signal')
@@ -210,7 +210,7 @@ def classifier_predict():
             global inference_file_path, model_file_path, label_file
             pred, top_k, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
             return str(top_k) + str(top_names)
-
+    return redirect(url_for('classifier_predict'))
 
 if __name__ == '__main__':
     app.debug = False
