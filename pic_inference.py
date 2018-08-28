@@ -193,6 +193,16 @@ def use_model():
 @app.route('/model/picture-inference', methods=['GET', 'POST'])
 def classifier_predict():
     print('classfier_predict')
+    result = """
+        <!doctype html>
+        <title>车辆检测项目</title>
+        <h1>请上传一张需要检测汽车的照片吧！</h1>
+        <form action="" method=post enctype=multipart/form-data>
+          <p><input type=file name=file value='选择图片'>
+          <br/><br/>
+             <input type=submit value='上传预测'></form>
+        <p>%s</p>
+        """ % "<br>"
     if request.method == 'POST':
         print('ENTER POST')
         global inference_file_path, model_file_path, label_file
@@ -203,11 +213,17 @@ def classifier_predict():
         f.save(inference_file_path)
         print(f.filename)
         pred, scores, top_names = run_inference_on_image(inference_file_path, sess)
-        string = ''
+
+        new_url = inference_file_path
+        image_tag = '<img src="%s"></img><p>'
+        new_tag = image_tag % new_url
+
+        format_string = '<b>图片中分类结果如下：</b><br/>'
+
         for i in range(5):
-            string += top_names[i] + " " + str(scores[i])
-            string += '\n'
-        return string
+            format_string += "%s (相似度:%.5f&#37;)<BR>" % (top_names[i], scores[i] * 100)
+            format_string += '\n'
+        return new_tag + format_string + '<BR>'
     return redirect(url_for('classifier_predict'))
 
 
