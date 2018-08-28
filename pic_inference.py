@@ -195,22 +195,15 @@ def classifier_predict():
     print('classfier_predict')
     if request.method == 'POST':
         print('ENTER POST')
-        global inference_file_path
+        global inference_file_path, model_file_path, label_file
         f = request.files['file']
         base_path = path.abspath(path.dirname(__file__))
         upload_path = path.join(base_path, 'uploads/')
         inference_file_path = upload_path + f.filename
         f.save(inference_file_path)
         print(f.filename)
-        return redirect(url_for('classifier_predict'))
-    if request.method == 'GET':
-        print('enter get method')
-        signal = request.args.get('signal')
-        print(signal)
-        if signal == 'INF':
-            global inference_file_path, model_file_path, label_file
-            pred, top_k, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
-            return str(top_k) + str(top_names)
+        pred, top_k, top_names = run_inference_on_image(inference_file_path, model_file_path, label_file)
+        return str(top_k) + str(top_names)
     return redirect(url_for('classifier_predict'))
 
 if __name__ == '__main__':
