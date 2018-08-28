@@ -17,11 +17,6 @@ class Classifier:
         self.clf.fit(X_train, y_train)
         self.score = self.clf.score(X_test, y_test)
 
-    def get_score(self):
-        return self.score
-
-
-
     def test_classifier(self, csv_path):
         data = pd.read_csv(csv_path)
         X = data.iloc[:, 1:]
@@ -40,25 +35,6 @@ class Classifier:
     def get_score(self):
         return self.score
 
-
-
-    def test_classifier(self, csv_path):
-        data = pd.read_csv(csv_path)
-        X = data.iloc[:, 1:]
-        y = data.iloc[:, 0]
-        yy = self.clf.predict(X)
-        y = list(y)
-        yy = list(yy)
-        size = len(y)
-        count = 0
-        for i in xrange(size):
-            if y[i] == yy[i]:
-                count += 1
-        p = float(count) / size
-        return {'p' : p}
-
-    def get_score(self):
-        return self.score
 
     def save_clf(self, name):
         model_path = "model/" + name + ".m"
