@@ -369,11 +369,13 @@ def get_pic_eval_params():
                   'batchSize_eval': request.form.get('batchSize_eval'),
                   'maxNumBatches': request.form.get('maxNumBatches')}
         print(params)
+        fo = open('logEval.txt','w')
         cmd = """python ./slim/eval_image_classifier.py --dataset_name=%s --dataset_dir=./slim/tmp/cifar10 \
         --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./slim/tmp/pnasnet-model \
         --eval_dir=./slim/tmp/pnasnet-model --batch_size=%s --max_num_batches=%s"""
-        os.system(cmd % (params['datasetName_eval'], params['batchSize_eval'], params['maxNumBatches']))
+        # os.system(cmd % (params['datasetName_eval'], params['batchSize_eval'], params['maxNumBatches']))
 
+        p = Popen(cmd % (params['datasetName_eval'], params['batchSize_eval'], params['maxNumBatches']), shell=True, stdin=PIPE, stdout=fo, stderr=STDOUT, close_fds=True)
         return redirect(url_for('picture_classifier'))
 
 
