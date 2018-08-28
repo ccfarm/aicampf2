@@ -201,7 +201,7 @@ def get_model_effect(id):
     conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
                                    , auth_plugin='mysql_native_password')
     cursor = conn.cursor()
-    cursor.execute('select model_zuoyong from model_manage where id = %s', [id])
+    cursor.execute('select * from model_manage where id = %s', [id])
     model = cursor.fetchone()
     cursor.close()
     conn.close()
