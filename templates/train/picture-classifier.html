@@ -74,7 +74,7 @@
                 <tr>
                     <th>trainable_scopes</th>
                     <td>
-                        <input type="text" name="trainable_scopes" id="train_scopes" value="final_layer,aux7">
+                        <input type="text" name="trainable_scopes" id="train_scopes" value="final_layer,aux_7,cell10,cell11">
                     </td>
                 </tr>
 
@@ -107,13 +107,13 @@
                 <tr>
                     <th>batch_size</th>
                     <td>
-                        <input type="text" name="batch_size_eval" id="batch_size_eval" value="32">
+                        <input type="text" name="batch_size_eval" id="batch_size_eval" value="16">
                     </td>
                 </tr>
                 <tr>
                     <th>max_num_batches</th>
                     <td>
-                        <input type="text" name="max_num_batches" id="max_num_batches" value="256">
+                        <input type="text" name="max_num_batches" id="max_num_batches" value="128">
                     </td>
                 </tr>
                 </tbody>
@@ -133,15 +133,15 @@
             <table class="layui-table">
                 <tbody>
                 <tr>
-                    <th>模型导出路径</th>
+                    <th>模型导出名</th>
                     <td>
-                        <input type="text" name="export_graph" style="width:400px;height:20px;" value="frozen_model.pb">
+                        <input type="text" name="export_graph" style="width:400px;height:20px;" id="modelSaveName" value="frozen_model.pb">
                     </td>
                 </tr>
                 </tbody>
             </table>
             <div>
-                <input type="button" name="train" style="width:160px;height:40px;" value="导出模型并冻结权重">
+                <input type="button" id="exportButton" name="train" style="width:160px;height:40px;" value="导出模型并冻结权重">
             </div>
         </div>
     </fieldset>
@@ -269,6 +269,22 @@
                 success: function (data) {
                     // 请求成功后，再次就收数据，参数data就是后端处理后返回给你的数据
                     alert('开始评估模型')
+                }
+            })
+        })
+
+        // 导出模型的函数
+        var modelSaveName = $('#modelSaveName').val()
+        $('#exportButton').on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: '/picture-model-export',
+                data: {
+                    modelSaveName: modelSaveName, // 发送的数据
+                },
+                success: function (data) {
+                    // 请求成功后，再次就收数据，参数data就是后端处理后返回给你的数据
+                    alert('模型导出成功')
                 }
             })
         })

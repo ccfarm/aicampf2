@@ -291,6 +291,23 @@ def get_pic_eval_params():
     return redirect(url_for('picture_classifier'))
 
 
+@app.route('/picture-model-export', methods=['GET', 'POST'])
+def get_pic_eval_params():
+    if request.method == 'POST':
+        params = {'modelSaveName': request.form.get('modelSaveName')}
+        print(params)
+        base_path = path.abspath(path.dirname(__file__))
+        cmd1 = """python ./slim/export_inference_graph_new.py --model_name=pnasnet_large --batch_size=1 \
+        --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --output_file=pnasnet_graph_def.pb"""
+        os.system(cmd1)
+        cmd2 = """python freeze_graph.py --input_graph=pnasnet_graph_def.pb \
+        --input_checkpoint=./tmp/pnasnet-model/model.ckpt-13 --output_graph=%s \
+         --output_node_names=output --input_binary=True"""
+        model_save_path = path.join(base_path, params['modelSaveName'])
+        os.system(cmd2 % model_save_path)
+        return redirect(url_for('picture_classifier'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0',debug=False)
