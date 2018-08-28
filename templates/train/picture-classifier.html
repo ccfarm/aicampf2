@@ -219,10 +219,10 @@
                 }
             })
             // ajax轮询获取log信息
-            /*picClassfierTimer = window.setInterval(function () {
+            picClassfierTimer = window.setInterval(function () {
                 $.ajax({
                     type: 'GET',
-                    url: '/picture-classifier-params',
+                    url: '/pict-classifier-getLog',
                     data: {
                       signal: 'LOG'
                     },
@@ -233,7 +233,7 @@
                         $('#logTA').val('Log Information: ' + logInformation)
                     }
                 })
-            }, 5000) // 5000ms*/
+            }, 5000) // 5000ms
         })
 
          $('#stopButton').on('click', function () {

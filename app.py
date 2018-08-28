@@ -289,6 +289,19 @@ def upload_pic_file():
         file.save(file_name)
     return redirect(url_for('picture_classifier'))
 
+@app.route('/pict-classifier-getLog', methods=['GET', 'POST'])
+def get_pic_train_log():
+    global offset
+    if request.method == 'GET':
+        with open('log.txt', 'r') as f:
+            f.seek(offset, 0)
+            f.seek(0, 2)
+            cur_length = f.tell()
+            size = cur_length - offset
+            f.seek(offset, 0)
+            data = f.read(size)
+            offset = cur_length
+            return data
 
 @app.route('/picture-classifier-params', methods=['GET', 'POST'])
 def get_pic_train_params():
@@ -307,13 +320,13 @@ def get_pic_train_params():
         cmd = """python -u ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s \
         --checkpoint_path=%s --checkpoint_exclude_scopes=%s --trainable_scopes=%s \
         --model_name=%s --train_dir=%s --learning_rate=%s \
-        --optimizer=%s --batch_size=%s """
+        --optimizer=%s --batch_size=%s >> log.txt"""
         p = Popen(cmd % (
         params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
         params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
         params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-        for line in p.stdout:
-            print(line)
+        # for line in p.stdout:
+        #     print(line)
     global size, offset
     if request.method == 'GET' and p is not None:
         print('enter get method')
@@ -344,6 +357,7 @@ def get_pic_eval_params():
         --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./slim/tmp/pnasnet-model \
         --eval_dir=./slim/tmp/pnasnet-model --batch_size=%s --max_num_batches=%s"""
         os.system(cmd % (params['datasetName_eval'], params['batchSize_eval'], params['maxNumBatches']))
+
         return redirect(url_for('picture_classifier'))
 
 
