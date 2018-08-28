@@ -35,6 +35,9 @@ p = None
 
 ALLOWED_EXTENSIONS = {'jpg', 'JPG', 'jpeg', 'JPEG', 'png'}
 
+model_online_map = {}
+model_popen_map = {}
+
 
 @app.route('/')
 def hello_world():
@@ -183,7 +186,8 @@ def regression_save():
 @app.route('/model/model-list.html')
 def model_list():
     models = service.read_model_list()
-    return render_template('/model/model-list.html', models=models)
+    global model_online_map
+    return render_template('/model/model-list.html', models=models, model_online_map=model_online_map)
 
 
 @app.route('/model/use-model.html/<int:id>')
@@ -191,6 +195,27 @@ def use_model(id):
     global classifier_clf
     classifier_clf = load_classifier(id)
     return render_template('/model/use-model.html')
+
+@app.route('/model/start-model/<int:id>')
+def start_model(id):
+    port = "67" + str(id)
+    url = "http://127.0.0.1:" + port
+    global model_online_map
+    global model_popen_map
+    model_online_map[id] = url
+    p = Popen("python app_classifier.py " + str(id) + " " + port, shell=True, stdout=PIPE)
+    model_popen_map[id] = p
+    return redirect(url_for('model_list'))
+
+@app.route('/model/shut-model/<int:id>')
+def shut_model(id):
+    global model_online_map
+    global model_popen_map
+    model_online_map.pop(id)
+    p = model_popen_map[id]
+    p.kill()
+    model_popen_map.pop(id)
+    return redirect(url_for('model_list'))
 
 
 @app.route('/model/classfier-predict', methods=['GET', 'POST'])
@@ -287,6 +312,7 @@ def get_pic_eval_params():
         --eval_dir=./slim/tmp/pnasnet-model --batch_size=%s --max_num_batches=%s"""
         os.system(cmd % (params['datasetName_eval'], params['batchSize_eval'], params['maxNumBatches']))
         return redirect(url_for('picture_classifier'))
+
 
 
 @app.route('/picture-model-export', methods=['GET', 'POST'])
