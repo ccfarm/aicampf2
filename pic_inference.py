@@ -116,7 +116,7 @@ def create_graph(model_file=None):
         _ = tf.import_graph_def(graph_def, name='')
 
 
-def run_inference_on_image(image, model_file=None, label_file=None):
+def run_inference_on_image(image, sess=None):
     """Runs inference on an image.
 
     Args:
@@ -132,7 +132,7 @@ def run_inference_on_image(image, model_file=None, label_file=None):
     # Creates graph from saved GraphDef.
     # create_graph(model_file)
 
-    with tf.Session() as sess:
+    # with tf.Session() as sess:
         # Some useful tensors:
         # 'softmax:0': A tensor containing the normalized prediction across
         #   1000 labels.
@@ -141,23 +141,23 @@ def run_inference_on_image(image, model_file=None, label_file=None):
         # 'DecodeJpeg/contents:0': A tensor containing a string providing JPEG
         #   encoding of the image.
         # Runs the softmax tensor by feeding the image_data as input to the graph.
-        softmax_tensor = sess.graph.get_tensor_by_name('output:0')
-        predictions = sess.run(softmax_tensor,
-                               {'input:0': image_data})
-        predictions = np.squeeze(predictions)
+    softmax_tensor = sess.graph.get_tensor_by_name('output:0')
+    predictions = sess.run(softmax_tensor,
+                           {'input:0': image_data})
+    predictions = np.squeeze(predictions)
 
-        # Creates node ID --> English string lookup.
-        node_lookup = NodeLookup(label_file)
+    # Creates node ID --> English string lookup.
+    node_lookup = NodeLookup(label_file)
 
-        top_k = predictions.argsort()[-5:][::-1]
-        top_names = []
-        scores = []
-        for node_id in top_k:
-            human_string = node_lookup.id_to_string(node_id)
-            top_names.append(human_string)
-            score = predictions[node_id]
-            scores.append(score)
-            print('id:[%d] name:[%s] (score = %.5f)' % (node_id, human_string, score))
+    top_k = predictions.argsort()[-5:][::-1]
+    top_names = []
+    scores = []
+    for node_id in top_k:
+        human_string = node_lookup.id_to_string(node_id)
+        top_names.append(human_string)
+        score = predictions[node_id]
+        scores.append(score)
+        print('id:[%d] name:[%s] (score = %.5f)' % (node_id, human_string, score))
     return predictions, scores, top_names
 
 
@@ -228,7 +228,7 @@ if __name__ == '__main__':
             _ = tf.import_graph_def(graph_def, name='')
             sess = tf.Session(graph=graph)
 
-    run_inference_on_image('./slim/test.jpg', model_file_path, label_file)
+    run_inference_on_image('./slim/test.jpg', sess)
     app.run(host='0.0.0.0', port=sys.argv[2], debug=False)
     # global model_id
     # model_id = 5
