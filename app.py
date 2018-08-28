@@ -316,7 +316,7 @@ def get_pic_eval_params():
 
 
 @app.route('/picture-model-export', methods=['GET', 'POST'])
-def get_pic_eval_params():
+def get_pic_export():
     if request.method == 'POST':
         params = {'modelSaveName': request.form.get('modelSaveName')}
         print(params)
