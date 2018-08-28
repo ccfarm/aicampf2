@@ -76,6 +76,17 @@ def upload_classifier_file():
     return jsonify("ok")
 
 
+@app.route('/classifier-show-data', methods=['GET', 'POST'])
+def classifier_show_file():
+    global csv_path
+    f = open(csv_path)
+    content = ''
+    reader = csv.reader(f)
+    rows = [row for row in reader]
+    f.close()
+    return render_template('train/classifier-show-data.html', rows=rows)
+
+
 @app.route('/classifier-train', methods=['GET', 'POST'])
 def classifier_train():
     if request.method == 'POST':

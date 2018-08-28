@@ -1,0 +1,22 @@
+{% include 'common/header.html' %}
+  
+  <body>
+    <div class="x-body">
+        <table class="layui-table">
+        <tbody>
+        {% for row in rows %}
+        <tr>
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <script>
+  </script>
+  </body>
+
+</html>
