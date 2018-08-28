@@ -206,7 +206,7 @@ def get_model_effect(id):
     cursor.close()
     conn.close()
     effect = model[3]
-    path = model[4]
+    model_path = model[4]
     return effect, model_path
 
 
