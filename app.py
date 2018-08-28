@@ -203,9 +203,7 @@ def start_model(id):
     global model_online_map
     global model_popen_map
     model_online_map[id] = url
-    print url
     p = Popen("python app_classifier.py " + str(id) + " " + port, shell=True, stdout=PIPE)
-    print "python app_classifier.py " + str(id) + " " + port
     model_popen_map[id] = p
     return redirect(url_for('model_list'))
 
