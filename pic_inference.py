@@ -52,8 +52,6 @@ UPLOAD_FOLDER = 'uploads'
 
 
 
-
-
 class NodeLookup(object):
     """Converts integer node ID's to human readable labels."""
 
@@ -132,7 +130,7 @@ def run_inference_on_image(image, model_file=None, label_file=None):
     image_data = open(image, 'rb').read()
 
     # Creates graph from saved GraphDef.
-    create_graph(model_file)
+    # create_graph(model_file)
 
     with tf.Session() as sess:
         # Some useful tensors:
@@ -220,15 +218,16 @@ if __name__ == '__main__':
     label_file = sys.argv[4]
     # image_file = sys.argv[5]
     graph = tf.Graph()
-    # with graph.as_default():
-    #     classify_graph_def = tf.GraphDef()
-    #     print('classify_graph_def = tf.GraphDef()')
-    #     with tf.gfile.GFile(model_file, 'rb') as f:
-    #         classify_graph_def.ParseFromString(f.read())
-    #         tf.import_graph_def(classify_graph_def, name='')
-    #         print('tf.import_graph_def(classify_graph_def, name='')')
-    #         classify_sess = tf.Session(graph=graph)
-    #         print('classify_sess = tf.Session(graph=graph)')
+    with graph.as_default():
+        classify_graph_def = tf.GraphDef()
+        print('classify_graph_def = tf.GraphDef()')
+        with tf.gfile.GFile(model_file, 'rb') as f:
+            classify_graph_def.ParseFromString(f.read())
+            tf.import_graph_def(classify_graph_def, name='')
+            print('tf.import_graph_def(classify_graph_def, name='')')
+            classify_sess = tf.Session(graph=graph)
+            print('classify_sess = tf.Session(graph=graph)')
+    run_inference_on_image('./slim/test.jpg', model_file_path, label_file)
     app.run(host='0.0.0.0', port=sys.argv[2], debug=False)
     # global model_id
     # model_id = 5
