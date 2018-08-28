@@ -315,16 +315,17 @@ def get_pic_train_params():
         print(params)
         model_params = params
         # base_path = path.abspath(path.dirname(__file__))
+        fo = open('log.txt','w')
         with open('./uploads/path.txt', 'rb') as f:
             data_path = f.read().strip()
         cmd = """python -u ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s \
         --checkpoint_path=%s --checkpoint_exclude_scopes=%s --trainable_scopes=%s \
         --model_name=%s --train_dir=%s --learning_rate=%s \
-        --optimizer=%s --batch_size=%s >> log.txt"""
+        --optimizer=%s --batch_size=%s"""
         p = Popen(cmd % (
         params['datasetName'], data_path, params['checkPointPath'], params['excludeScopes'], params['trainScopes'],
         params['modelName'], params['trainDir'], params['learnRate'], params['optimizer'],
-        params['batchSize']), shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        params['batchSize']), shell=True, stdin=PIPE, stdout=fo, stderr=STDOUT, close_fds=True)
         # for line in p.stdout:
         #     print(line)
     global size, offset
