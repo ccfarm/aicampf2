@@ -324,12 +324,22 @@ def get_pic_export():
         cmd1 = """python ./slim/export_inference_graph_new.py --model_name=pnasnet_large --batch_size=1 \
         --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --output_file=pnasnet_graph_def.pb"""
         os.system(cmd1)
+        all_files = os.listdir(r'C:\Users\admin\Desktop\project\vehicle detection\slim\tmp\pnasnet-model')
+        maxnum = '0'
+        maxfile = None
+        for file in all_files:
+            if file.count('index'):
+                num = file.split('.')[-2].split('-')[-1]
+                if num > maxnum:
+                    maxnum = num
+                    maxfile = file
+        maxfile = maxfile.rsplit('.', maxsplit=1)[0]
         cmd2 = """python ./slim/freeze_graph.py --input_graph=pnasnet_graph_def.pb \
-        --input_checkpoint=./tmp/pnasnet-model/model.ckpt-13 --output_graph=%s \
+        --input_checkpoint=./tmp/pnasnet-model/%s --output_graph=%s \
          --output_node_names=output --input_binary=True"""
         model_save_path = path.join(base_path, params['modelSaveName'])
         print(model_save_path)
-        os.system(cmd2 % model_save_path)
+        os.system(cmd2 % (maxfile, model_save_path))
         return redirect(url_for('picture_classifier'))
 
 
