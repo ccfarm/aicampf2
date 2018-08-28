@@ -7,9 +7,11 @@
       <table class="layui-table">
         <thead>
           <tr>
+              <th>编号</th>
             <th>模型名称</th>
             <th>模型种类</th>
             <th>模型作用</th>
+              <th>状态</th>
             <th >操作</th>
             </tr>
         </thead>
@@ -18,13 +20,29 @@
 
 
           <tr>
+              <td>{{ model[0] }}</td>
             <td>{{ model[1] }}</td>
             <td>{{ model[2] }}</td>
             <td>{{ model[3] }}</td>
+              {% if model[0] in model_online_map %}
+                  <td class="td-status">
+                <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+              </td>
+                {% else %}
+                  <td class="td-status">
+                <span class="layui-btn layui-btn-warm layui-btn-mini">未启用</span>
+              </td>
+                {% endif %}
+
             <td class="td-manage">
-              <a title="启用" onclick="x_admin_show( {{ "'" + model[1] + "'"}},
-                      {{ "'" + '/model/use-model.html/'}}{{model[0]}}{{"'"}},400,200)" href="javascript:;">
+              <a title="启用" href="{{ model_online_map[model[0]] }}" target="_blank">
                 <i class="layui-icon">&#xe609;</i>
+              </a>
+                <a title="上线" onclick="location='/model/start-model/{{ model[0] }}'" href="javascript:;">
+                <i class="layui-icon">&#xe652;</i>
+              </a>
+                <a title="下线" onclick="location='/model/shut-model/{{ model[0] }}'" href="javascript:;">
+                <i class="layui-icon">&#xe651;</i>
               </a>
             </td>
           </tr>
