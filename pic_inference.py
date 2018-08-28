@@ -23,6 +23,8 @@ import uuid
 from os import path
 from subprocess import Popen, PIPE, STDOUT
 import sys
+import mysql.connector
+import const
 
 import argparse
 import os.path
@@ -36,16 +38,16 @@ import tensorflow as tf
 
 app = Flask(__name__)
 model_id = None
-classifier_clf = None
+model_file_path = None
 
 
 FLAGS = tf.app.flags.FLAGS
 
 ALLOWED_EXTENSIONS = {'jpg', 'JPG', 'jpeg', 'JPEG', 'png'}
 
-app._static_folder = FLAGS.static_folder
-UPLOAD_FOLDER = FLAGS.static_folder + '/upload'
-OUTPUT_FOLDER = FLAGS.static_folder + '/output'
+
+UPLOAD_FOLDER = 'uploads'
+# OUTPUT_FOLDER = FLAGS.static_folder + '/output'
 
 
 
@@ -171,9 +173,9 @@ def run_inference(modelfile, labelfile, image):
 
 @app.route('/')
 def use_model():
-    global classifier_clf
+    global model_file_path
     global model_id
-    classifier_clf = load_classifier(model_id)
+    model_file_path = load_classifier(model_id)
     return render_template('/model/pic-inference.html')
 
 
@@ -189,27 +191,37 @@ def classifier_predict():
             print('file saved to %s' % file_path)
             return redirect(url_for('classifier_predict'))
     if request.method == 'GET':
-        global image,model_file,label_file
-        pred, top_k, top_names = run_inference_on_image(image, model_file, label_file)
+        global image, model_file_path, label_file
+        pred, top_k, top_names = run_inference_on_image(image, model_file_path, label_file)
         return str(top_k) + str(top_names)
 
+def load_classifier(id):
+    conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
+                                   , auth_plugin='mysql_native_password')
+    cursor = conn.cursor()
+    cursor.execute('select * from model_manage where id = %s', [id])
+    model = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    path = model[4]
+    return path
 
 if __name__ == '__main__':
     app.debug = False
     model_id = sys.argv[1]
-    model_file = sys.argv[3]
-    label_file = sys.argv[4]
-    image_file = sys.argv[5]
+    # model_file = sys.argv[3]
+    label_file = sys.argv[3]
+    image_file = sys.argv[4]
     graph = tf.Graph()
-    with graph.as_default():
-        classify_graph_def = tf.GraphDef()
-        print('classify_graph_def = tf.GraphDef()')
-        with tf.gfile.GFile(model_file, 'rb') as f:
-            classify_graph_def.ParseFromString(f.read())
-            tf.import_graph_def(classify_graph_def, name='')
-            print('tf.import_graph_def(classify_graph_def, name='')')
-            classify_sess = tf.Session(graph=graph)
-            print('classify_sess = tf.Session(graph=graph)')
+    # with graph.as_default():
+    #     classify_graph_def = tf.GraphDef()
+    #     print('classify_graph_def = tf.GraphDef()')
+    #     with tf.gfile.GFile(model_file, 'rb') as f:
+    #         classify_graph_def.ParseFromString(f.read())
+    #         tf.import_graph_def(classify_graph_def, name='')
+    #         print('tf.import_graph_def(classify_graph_def, name='')')
+    #         classify_sess = tf.Session(graph=graph)
+    #         print('classify_sess = tf.Session(graph=graph)')
     app.run(host='0.0.0.0', port=sys.argv[2], debug=False)
     # global model_id
     # model_id = 5
