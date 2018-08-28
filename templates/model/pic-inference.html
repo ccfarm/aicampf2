@@ -5,7 +5,7 @@
     <h2>请上传一张图片</h2>
     <form class="layui-form" action="/model/picture-inference" id="upload_pic_file" method="POST"
           enctype="multipart/form-data">
-        <input title="点击选择" multiple type="file" id="fileUpload" name="file"/>
+        <input title="点击选择" multiple type="file" id="picFileUpload" name="file"/>
         <input type="button" id="uploadPicButton" value="上传图片"/></form>
     <br>
     <div>
@@ -20,7 +20,7 @@
     $(function () {
 
         //上传文件的代码
-        $('#uploadFileButton').on('click', function () {
+        $('#uploadPicButton').on('click', function () {
             $.ajax({
                 url: '/model/picture-inference',
                 type: 'POST',
