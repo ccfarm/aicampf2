@@ -16,7 +16,7 @@ import const as const
 from regression import Regression
 from regression import load_regression
 import csv
-import os
+import os, json
 import uuid
 from os import path
 from subprocess import Popen, PIPE, STDOUT
@@ -29,6 +29,8 @@ classifier_clf = None
 
 regression = None
 regression_clf = None
+
+model_params = {}
 
 size = 0
 offset = 0
@@ -290,7 +292,7 @@ def upload_pic_file():
 
 @app.route('/picture-classifier-params', methods=['GET', 'POST'])
 def get_pic_train_params():
-    global p
+    global p, model_params
     if request.method == 'POST':
         params = {'learnRate': request.form.get('learnRateVal'), 'batchSize': request.form.get('batchSize'),
                   'checkPointPath': request.form.get('checkPointPath'), 'trainDir': request.form.get('trainDir'),
@@ -298,10 +300,11 @@ def get_pic_train_params():
                   'optimizer': request.form.get('optimizer'), 'datasetName': request.form.get('datasetName'),
                   'modelName': request.form.get('modelName')}
         print(params)
+        model_params = params
         # base_path = path.abspath(path.dirname(__file__))
         with open('./uploads/path.txt', 'rb') as f:
             data_path = f.read().strip()
-        cmd = """python ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s \
+        cmd = """python -u ./slim/train_image_classifier.py --dataset_name=%s --dataset_dir=%s \
         --checkpoint_path=%s --checkpoint_exclude_scopes=%s --trainable_scopes=%s \
         --model_name=%s --train_dir=%s --learning_rate=%s \
         --optimizer=%s --batch_size=%s """
@@ -375,12 +378,14 @@ def get_pic_export():
 
 
 def save_clf(path, name):
+    global model_params
     model_path = path
+    params_str = json.dumps(model_params)
     conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
                                    ,auth_plugin='mysql_native_password')
     cursor = conn.cursor()
-    cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address) '
-                   'values (%s, %s, %s, %s)', [name, 'pnasnet', 'pic_classification', model_path])
+    cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address, model_config)'
+                   'values (%s, %s, %s, %s, %s)', [name, 'pnasnet', 'pic_classification', model_path, params_str])
     conn.commit()
     cursor.close()
     conn.close()
