@@ -203,7 +203,7 @@ def classifier_predict():
         global inference_file_path, model_file_path, label_file
         f = request.files['file']
         base_path = path.abspath(path.dirname(__file__))
-        upload_path = path.join(base_path, 'uploads/')
+        upload_path = path.join(base_path, 'static/upload/')
         inference_file_path = upload_path + f.filename
         f.save(inference_file_path)
         print(f.filename)
