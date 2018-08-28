@@ -303,6 +303,21 @@ def get_pic_train_log():
             offset = cur_length
             return data
 
+
+@app.route('/pict-classifier-getEvalLog', methods=['GET', 'POST'])
+def get_pic_eval_log():
+    global offset
+    if request.method == 'GET':
+        with open('logEval.txt', 'r') as f:
+            f.seek(offset, 0)
+            f.seek(0, 2)
+            cur_length = f.tell()
+            size = cur_length - offset
+            f.seek(offset, 0)
+            data = f.read(size)
+            offset = cur_length
+            return data
+
 @app.route('/picture-classifier-params', methods=['GET', 'POST'])
 def get_pic_train_params():
     global p, model_params
