@@ -10,6 +10,7 @@ import const
 class Classifier:
     def __init__(self, csv_path, param_dict):
         data = pd.read_csv(csv_path)
+        self.param = str(param_dict)
         X = data.iloc[:, 1:]
         y = data.iloc[:, 0]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
@@ -42,8 +43,8 @@ class Classifier:
         conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
                                        ,auth_plugin='mysql_native_password')
         cursor = conn.cursor()
-        cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address) '
-                       'values (%s, %s, %s, %s)', [name, 'LR', 'classification', model_path])
+        cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address, model_config) '
+                       'values (%s, %s, %s, %s)', [name, 'LR', 'classification', model_path, self.param])
         conn.commit()
         cursor.close()
         conn.close()

@@ -11,6 +11,7 @@
             <th>模型名称</th>
             <th>模型种类</th>
             <th>模型作用</th>
+              <th>模型参数</th>
               <th>状态</th>
             <th >操作</th>
             </tr>
@@ -24,6 +25,7 @@
             <td>{{ model[1] }}</td>
             <td>{{ model[2] }}</td>
             <td>{{ model[3] }}</td>
+              <td>{{ model[5] }}</td>
               {% if model[0] in model_online_map %}
                   <td class="td-status">
                 <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
