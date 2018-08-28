@@ -6,7 +6,7 @@
     <form class="layui-form" action="/model/picture-inference" id="upload_pic_file" method="POST"
           enctype="multipart/form-data">
         <input title="点击选择" multiple type="file" id="picFileUpload" name="file"/>
-        <input type="button" id="uploadPicButton" value="上传图片"/></form>
+        <input type="button" id="uploadPicButton" onclick="uploadPicture()" value="上传图片"/></form>
     <br>
     <div>
         <input type="button" name="inference" style="width:80px;height:40px;" value="预测" id="inferenceButton">
@@ -17,9 +17,26 @@
     </div>
 </div>
 <script>
+    function uploadPicture() {
+            $.ajax({
+                url: '/model/picture-inference',
+                type: 'POST',
+                data: new FormData($('#picFileUpload')[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // todo ..
+                    alert("图片上传成功")
+                }
+            })
+        }
     $(function () {
 
+
+
         //上传文件的代码
+        /*
         $('#uploadPicButton').on('click', function () {
             $.ajax({
                 url: '/model/picture-inference',
@@ -33,7 +50,7 @@
                     alert("图片上传成功")
                 }
             })
-        })
+        })*/
         $('#inferenceButton').on('click', function () {
             // 在发送一个ajax请求，发送一个信号让后台预测
             $.ajax({
