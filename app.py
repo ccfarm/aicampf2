@@ -12,7 +12,7 @@ import numpy as np
 import json
 from classifier import Classifier
 from classifier import load_classifier
-
+import const as const
 from regression import Regression
 from regression import load_regression
 import csv
@@ -335,12 +335,26 @@ def get_pic_export():
                     maxfile = file
         maxfile = maxfile.split('.')[0] + maxfile.split('.')[1]
         cmd2 = """python ./slim/freeze_graph.py --input_graph=pnasnet_graph_def.pb \
-        --input_checkpoint=./tmp/pnasnet-model/%s --output_graph=%s \
+        --input_checkpoint=./slim/tmp/pnasnet-model/%s --output_graph=%s \
          --output_node_names=output --input_binary=True"""
-        model_save_path = path.join(base_path, params['modelSaveName'])
+        model_save_path = "model/" + params['modelSaveName']
         print(model_save_path)
         os.system(cmd2 % (maxfile, model_save_path))
+        save_clf(model_save_path, params['modelSaveName'])
         return redirect(url_for('picture_classifier'))
+
+
+def save_clf(path, name):
+    model_path = path
+    conn = mysql.connector.connect(user=const.db_user_name, password=const.db_password, database=const.db_database
+                                   ,auth_plugin='mysql_native_password')
+    cursor = conn.cursor()
+    cursor.execute('insert into model_manage (model_name, model_zhonglei, model_zuoyong, model_address) '
+                   'values (%s, %s, %s, %s)', [name, 'pnasnet', 'pic_classification', model_path])
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return None
 
 
 if __name__ == '__main__':
