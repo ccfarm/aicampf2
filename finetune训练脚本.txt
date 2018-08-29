@@ -1,0 +1,55 @@
+使用预训练模型进行inceptionv4等的finetune
+训练：
+python3 train_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --checkpoint_path=/path/to/inception_v4.ckpt --model_name=inception_v4 --checkpoint_exclude_scopes=InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits --train_dir=/path/to/train_ckpt --learning_rate=0.001 --optimizer=rmsprop  --batch_size=32
+
+python train_image_classifier.py --dataset_name=pj_vehicle --dataset_dir=./tmp/pj_vehicle --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13/model.ckpt --checkpoint_exclude_scopes=aux_7/aux_logits/FC/biases,aux_7/aux_logits/FC/weights,aux_7/aux_logits/aux_bn0,aux_7/aux_logits/aux_bn1,final_layer/FC/biases,final_layer/FC/weights --trainable_scopes=aux_7/aux_logits/FC/biases,aux_7/aux_logits/FC/weights,aux_7/aux_logits/aux_bn0,aux_7/aux_logits/aux_bn1,final_layer/FC/biases,final_layer/FC/weights --model_name=pnasnet_large --train_dir=./tmp/pnasnet-model --learning_rate=0.001 --optimizer=rmsprop --batch_size=32
+
+train集验证：
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=train --model_name=inception_v4 --checkpoint_path=/path/to/train_ckpt --eval_dir=/path/to/train_eval --batch_size=32 --max_num_batches=128
+
+python eval_image_classifier.py --dataset_name=pj_vehicle --dataset_dir=./tmp/pj_vehicle --dataset_split_name=train --model_name=pnasnet_large --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13 --eval_dir=./tmp/pnasnet-model --batch_size=32 --max_num_batches=128
+
+validation集验证：
+python3 eval_image_classifier.py --dataset_name=pj_vehicle --dataset_dir=./tmp/pj_vehicle --dataset_split_name=validation --model_name=pnasnet_large --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13 --eval_dir=/path/to/validation_eval --batch_size=32 --max_num_batches=128
+
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=validation --model_name=inception_v4 --checkpoint_path=/path/to/train_ckpt --eval_dir=/path/to/validation_eval --batch_size=32 --max_num_batches=128
+
+导出脚本：
+python export_inference_graph_new.py --model_name=pnasnet_large --batch_size=1 --dataset_name=pj_vehicle --dataset_dir=./tmp/pj_vehicle --output_file=pnasnet_graph_def.pb
+冻结权重：
+python freeze_graph.py --input_graph=pnasnet_graph_def.pb --input_checkpoint=./tmp/pnasnet-model/model.ckpt-75184 --output_graph=frozen_graph.pb --output_node_names=output --input_binary=True
+预测单张图片：
+python classify_image.py --model_file=frozen_graph.pb --label_file=./tmp/pj_vehicle/labels.txt --image_file=test.jpg
+
+统一脚本：
+python3 train_eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --checkpoint_path=/path/to/inception_v4.ckpt --model_name=inception_v4 --checkpoint_exclude_scopes=InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits --optimizer=rmsprop --train_dir=/path/to/log/train_ckpt --learning_rate=0.001 --dataset_split_name=validation --eval_dir=/path/to/eval --max_num_batches=128
+
+
+从头开始训练densenet
+训练
+python3 train_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --model_name=densenet --train_dir=/path/to/train_ckpt_den --learning_rate=0.1 --optimizer=rmsprop  --batch_size=16/path/to
+
+train集验证：
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=train --model_name=densenet --checkpoint_path=/path/to/train_ckpt_den --eval_dir=/path/to/train_eval_den --batch_size=32 --max_num_batches=128
+
+validation集验证：
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=validation --model_name=densenet --checkpoint_path=/path/to/train_ckpt_den --eval_dir=/path/to/validation_eval_den --batch_size=32 --max_num_batches=128
+
+统一脚本：
+python3 train_eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --model_name=densenet --checkpoint_exclude_scopes=InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits --train_dir=/path/to/log/train_ckpt --learning_rate=0.1 --dataset_split_name=validation --eval_dir=/path/to/eval_den --max_num_batches=128
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

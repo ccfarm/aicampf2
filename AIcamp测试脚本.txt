@@ -1,0 +1,21 @@
+使用预训练模型进行pnasnet等的finetune
+
+训练：
+python train_image_classifier.py --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13/model.ckpt --checkpoint_exclude_scopes=aux_7/aux_logits/FC/biases,aux_7/aux_logits/FC/weights,aux_7/aux_logits/aux_bn0,aux_7/aux_logits/aux_bn1,final_layer/FC/biases,final_layer/FC/weights --trainable_scopes=final_layer,aux_7,cell10,cell11 --model_name=pnasnet_large --train_dir=./tmp/pnasnet-model --learning_rate=0.001 --optimizer=rmsprop --batch_size=8 --clone_on_cpu=True
+
+python train_image_classifier.py --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13/model.ckpt --checkpoint_exclude_scopes=final_layer,aux_7 --trainable_scopes=final_layer,aux_7,cell10,cell11 --model_name=pnasnet_large --train_dir=./tmp/pnasnet-model --learning_rate=0.001 --optimizer=rmsprop --batch_size=32 --clone_on_cpu=False
+
+准备cifar10数据集：
+python download_and_convert_data.py --dataset_name=cifar10 --dataset_dir=./data
+
+验证：
+python eval_image_classifier.py --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --dataset_split_name=test --model_name=pnasnet_large --checkpoint_path=./tmp/pnasnet-5_large_2017_12_13 --eval_dir=./tmp/pnasnet-model --batch_size=8 --max_num_batches=128
+
+导出模型：
+python export_inference_graph_new.py --model_name=pnasnet_large --batch_size=1 --dataset_name=cifar10 --dataset_dir=./tmp/cifar10 --output_file=pnasnet_graph_def.pb
+
+冻结权重：
+python freeze_graph.py --input_graph=pnasnet_graph_def.pb --input_checkpoint=./tmp/pnasnet-model/model.ckpt-13 --output_graph=frozen_graph.pb --output_node_names=output --input_binary=True
+
+单张图片inference:
+python classify_image.py --model_file=frozen_graph.pb --label_file=./tmp/cifar10/labels.txt --image_file=test.jpg
